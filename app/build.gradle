@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+File signPropertiesFile = file('sign/keystore.properties')
+
+
+
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
@@ -11,12 +15,47 @@ android {
         versionName version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+
+    if (signPropertiesFile.exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(signPropertiesFile))
+        signingConfigs {
+            release {
+                storeFile file(properties['keystore'])
+                storePassword properties['storePassword']
+                keyAlias properties['keyAlias']
+                keyPassword properties['keyPassword']
+            }
         }
     }
+
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true//zipalign优化
+            shrinkResources true//移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (signPropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+            resValue("string","DEBUG","false")
+        }
+        debug {
+            minifyEnabled false//混淆编译
+            zipAlignEnabled false//zipalign优化
+            shrinkResources false//移除无用的resource文件
+            versionNameSuffix "-debug" //打包出来的后缀名
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (signPropertiesFile.exists()) {
+                signingConfig signingConfigs.debug
+            }
+            resValue("string","DEBUG","true")
+        }
+    }
+
+
 }
 
 dependencies {
