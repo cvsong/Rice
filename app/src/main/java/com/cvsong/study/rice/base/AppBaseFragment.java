@@ -1,11 +1,13 @@
 package com.cvsong.study.rice.base;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
-import com.cvsong.study.common_library.base.BaseActivity;
 import com.cvsong.study.common_library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.common_library.wiget.statuslayout.OnShowHideViewListener;
 import com.cvsong.study.common_library.wiget.statuslayout.StatusLayoutManager;
@@ -14,40 +16,28 @@ import com.cvsong.study.rice.R;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class AppBaseActivity extends BaseActivity implements IBaseView {
+/**
+ * 应用级BaseFragment
+ */
+public abstract class AppBaseFragment extends Fragment
+        implements IBaseView {
 
 
-    private long lastClick = 0;//上次点击时间
-    protected String TAG;//Log标记
     protected StatusLayoutManager statusLayoutManager;
-    private LinearLayout llContent;
     private Unbinder unbinder;
+    private FrameLayout viewContent;
+    private long lastClick = 0;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setThemStyle();//设置主题样式
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_app_base, container, false);
+        viewContent = (FrameLayout) view.findViewById(R.id.view_content);
 
-        setContentView(R.layout.activity_app_base);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+        initStatusLayout();
+        unbinder = ButterKnife.bind(this, view);//绑定黄油刀
 
-        TAG = this.getClass().getSimpleName();
-
-        llContent = (LinearLayout) findViewById(R.id.ll_content);
-
-        initStatusLayout();//初始化多状态布局
-        unbinder = ButterKnife.bind(this);//绑定黄油刀
-        initView(savedInstanceState,llContent);//View初始化
-        loadData();//加载数据
-
-    }
-
-
-    /**
-     * 设置主题样式
-     */
-    protected void setThemStyle() {
-
+        return view;
     }
 
 
@@ -55,9 +45,8 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
      * 初始化多状态布局
      */
     private void initStatusLayout() {
-
-        statusLayoutManager = StatusLayoutManager.newBuilder(this)
-                .contentView(bindLayout())//绑定布局文件
+        statusLayoutManager = StatusLayoutManager.newBuilder(getActivity())
+                .contentView(bindLayout())//绑定布局Id
                 .emptyDataView(R.layout.layout_status_emptydata)
                 .errorView(R.layout.layout_status_error)
                 .loadingView(R.layout.layout_status_loading)
@@ -74,25 +63,32 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
                 }).onRetryListener(new OnRetryListener() {
                     @Override
                     public void onRetry() {
-                        loadData();//加载数据
+                        loadData();
                     }
                 }).build();
 
-
         //将多状态布局添加到内容布局中
         View rootLayout = statusLayoutManager.getRootLayout();
-        if (llContent != null) {
-            llContent.addView(rootLayout);
-        }
+        viewContent.addView(rootLayout);
         statusLayoutManager.showContent();
-
-
     }
 
 
     @Override
-    public void onClick(final View view) {
-        if (!isFastClick()) onWidgetClick(view);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(savedInstanceState, view);//View初始化
+        loadData();//数据加载
+    }
+
+
+
+
+    @Override
+    public void onClick(View view) {
+        if (!isFastClick()) {
+            onWidgetClick(view);
+        }
     }
 
 
@@ -110,21 +106,22 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         return true;
     }
 
+
     /**
-     * 视图点击事件
+     * View点击
      *
-     * @param view 视图
+     * @param view
      */
-    protected void onWidgetClick(final View view) {
-    }
+    protected void onWidgetClick(View view) {}
 
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
-
         if (unbinder != Unbinder.EMPTY) {
-            unbinder.unbind();//解绑黄油刀
+            unbinder.unbind();
         }
     }
+
+
 }

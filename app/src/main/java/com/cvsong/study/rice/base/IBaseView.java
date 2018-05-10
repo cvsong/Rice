@@ -9,12 +9,6 @@ import android.view.View;
  */
 interface IBaseView extends View.OnClickListener {
 
-    /**
-     * 初始化数据
-     *
-     * @param bundle 传递过来的 bundle
-     */
-    void initData(@Nullable final Bundle bundle);
 
     /**
      * 绑定布局
@@ -23,20 +17,19 @@ interface IBaseView extends View.OnClickListener {
      */
     int bindLayout();
 
+
     /**
      * 初始化 view
      */
-    void initView(final Bundle savedInstanceState, final View contentView);
+    void initView(final Bundle savedInstanceState,View view);
+
+
 
     /**
-     * 业务操作
+     * 加载数据
      */
-    void doBusiness();
+    void loadData();
 
-    /**
-     * 视图点击事件
-     *
-     * @param view 视图
-     */
-    void onWidgetClick(final View view);
+
+
 }
