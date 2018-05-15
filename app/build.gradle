@@ -27,6 +27,14 @@ android {
                 keyAlias properties['keyAlias']
                 keyPassword properties['keyPassword']
             }
+
+            debug {
+                storeFile file(properties['keystore_debug'])
+                storePassword properties['storePassword_debug']
+                keyAlias properties['keyAlias_debug']
+                keyPassword properties['keyPassword_debug']
+            }
+
         }
     }
 
@@ -36,6 +44,7 @@ android {
             minifyEnabled true
             zipAlignEnabled true//zipalign优化
             shrinkResources true//移除无用的resource文件
+            versionNameSuffix "-release" //打包出来的后缀名
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
                 signingConfig signingConfigs.release
