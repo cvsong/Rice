@@ -44,8 +44,8 @@ public class AppApplication extends BaseApplication {
     // init it in ur application
     public void initLog() {
         final LogUtils.Config config = LogUtils.getConfig()
-                .setLogSwitch(BuildConfig.DEBUG)// 设置 log 总开关，包括输出到控制台和文件，默认开
-                .setConsoleSwitch(BuildConfig.DEBUG)// 设置是否输出到控制台开关，默认开
+                .setLogSwitch(true)// 设置 log 总开关，包括输出到控制台和文件，默认开
+                .setConsoleSwitch(true)// 设置是否输出到控制台开关，默认开
                 .setGlobalTag(null)// 设置 log 全局标签，默认为空
                 // 当全局标签不为空时，我们输出的 log 全部为该 tag，
                 // 为空时，如果传入的 tag 为空那就显示类名，否则显示 tag

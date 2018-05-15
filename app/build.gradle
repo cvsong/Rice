@@ -14,9 +14,30 @@ android {
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+
+        /*分包配置*/
+        splits {
+            abi {
+                enable true
+                reset()
+                include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
+                universalApk true //generate an additional APK that contains all the ABIs
+            }
+        }
+
+
+        /*NDK开发配置*/
+        ndk {
+            moduleName "jniutil"
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
 
+
+    /*签名信息配置*/
     if (signPropertiesFile.exists()) {
         Properties properties = new Properties()
         properties.load(new FileInputStream(signPropertiesFile))
