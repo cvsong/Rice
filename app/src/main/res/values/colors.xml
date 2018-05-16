@@ -3,4 +3,31 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--透明-->
+    <color name="transparent">#00000000</color>
+
+
+
+    <!--背景颜色-->
+    <color name="bg_white">#ffffff</color>
+
+
+
+
+
+
+
+    <!--字体颜色-->
+    <color name="font_white">#ffffff</color>
+
+
+
+
+
+    <!--分隔线颜色-->
+    <color name="divider_e1e1e1">#e1e1e1</color>
+
+
+
+
 </resources>
