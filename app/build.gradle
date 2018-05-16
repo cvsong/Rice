@@ -1,52 +1,83 @@
+/*
+apply plugin: 'xxx':二进制插件
+apply from: 'xxx':应用脚本插件
+
+App插件id：com.android.application.
+Library插件id：com.android.library.
+Test插件id：com.android.test.
+*/
+
 apply plugin: 'com.android.application'
 
+//签名配置信息文件
 File signPropertiesFile = file('sign/keystore.properties')
 
-
-
+/*android{}是Android插件所提供的一个扩展类型,可以用来自定义Gradle工程,是Android Gradle工程配置的唯一入口*/
 android {
+    /*compileSdkVersion-编译所依赖的Android SDK版本*/
     compileSdkVersion compile_sdk_version
+    /*buildToolsVersion-构建该Android工程所用构建工具的版本*/
     buildToolsVersion build_tools_version
+
+    /*defaultConfig{}是默认的配置,它是一个ProductFlavor.ProductFlavor允许根据不同的情况同时生成不同的apk包*/
     defaultConfig {
+        /*applicationId-应用包名*/
         applicationId "com.cvsong.study.rice"
+        /*minSdkVersion-支持的最低Android系统版本*/
         minSdkVersion min_sdk_version
+        /*targetSdkVersion-基于开发的Android系统版本*/
         targetSdkVersion target_sdk_version
+        /*versionCode-应用版本号*/
         versionCode version_code
+        /*versionName-应用版本名称*/
         versionName version_name
+        /*multiDexEnabled-用于配置该BuildType是否启用自动拆分多个Dex的功能*/
+        multiDexEnabled true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-
 
         /*分包配置*/
         splits {
             abi {
                 enable true
                 reset()
+                //为不同的CPU架构创建不同的APK
                 include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
                 universalApk true //generate an additional APK that contains all the ABIs
             }
         }
 
-
-        /*NDK开发配置*/
+        /*ndk{}多平台编译,生成有so库的时候使用*/
         ndk {
             moduleName "jniutil"
+            //设置支持的so库架构
             abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
     }
 
-
+    /*
+    sourceSets{}是源代码集合,是Java插件用来描述和管理源代码及资源的一个抽象概念.
+    可用来更改源代码集合的Java目录或资源目录.
+    */
+    sourceSets {
+        main {
+            /*告诉Gradle关于jni so包的存放路径就在app/libs*/
+            /*jniLibs.srcDirs=['libs']*/
+        }
+    }
 
     /*签名信息配置*/
     if (signPropertiesFile.exists()) {
         Properties properties = new Properties()
         properties.load(new FileInputStream(signPropertiesFile))
+        /*签名配置*/
         signingConfigs {
+
             release {
-                storeFile file(properties['keystore'])
-                storePassword properties['storePassword']
-                keyAlias properties['keyAlias']
-                keyPassword properties['keyPassword']
+                storeFile file(properties['keystore'])//签名文件
+                storePassword properties['storePassword']//签名文件密码
+                keyAlias properties['keyAlias']//签名证书中秘钥别名
+                keyPassword properties['keyPassword']//签名证书中改密钥的密码
             }
 
             debug {
@@ -59,29 +90,61 @@ android {
         }
     }
 
-
+    /*buildTypes{}构建类型*/
     buildTypes {
+
         release {
-            minifyEnabled true
-            zipAlignEnabled true//zipalign优化
-            shrinkResources true//移除无用的resource文件
+            minifyEnabled true//是否混淆编译
+            zipAlignEnabled true//是否使用Zipalign工具压缩
+            shrinkResources true//是否移除未利用的资源文件
             versionNameSuffix "-release" //打包出来的后缀名
+            //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
+                //签名配置
                 signingConfig signingConfigs.release
             }
-            resValue("string","DEBUG","false")
+            //自定义属性
+            resValue("string", "DEBUG", "false")
         }
+
         debug {
-            minifyEnabled false//混淆编译
-            zipAlignEnabled false//zipalign优化
-            shrinkResources false//移除无用的resource文件
-            versionNameSuffix "-debug" //打包出来的后缀名
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            versionNameSuffix "-debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
                 signingConfig signingConfigs.debug
             }
-            resValue("string","DEBUG","true")
+            resValue("string", "DEBUG", "true")
+        }
+    }
+
+    /*Gradle3.0.0及以上,必须要给flavor定义一个维度*/
+    flavorDimensions "test"
+    /*productFlavors{}Gradle多渠道打包*/
+    productFlavors {
+        riceA {
+            //维度名称
+            dimension "test"
+            //应用包名
+            applicationId "com.cvsong.study.rice.testA"
+            //应用版本名称
+            versionName "rice-testA-v1.0.0"
+            //占位符,可以通过它动态配置AndroidManifest文件一些内容
+            manifestPlaceholders = [APP_NAME: "RiceA测试版"]
+            //为BuildConfig文件生成自定义变量名
+            buildConfigField "String", "BASE_URL", "\"testA_URL\""
+        }
+
+
+        riceB {
+            dimension "test"
+            applicationId "com.cvsong.study.rice.testB"
+            versionName "rice-testB-v1.0.0"
+            manifestPlaceholders = [APP_NAME: "RiceB测试版"]
+            buildConfigField "String", "BASE_URL", "\"testB_URL\""
         }
     }
 
@@ -89,13 +152,17 @@ android {
 }
 
 dependencies {
+    /*本地libs文件夹下的扩展名为jar的都会被依赖*/
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    /*依赖本地的module*/
     implementation project(':common_library')
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+
+    /*implementation和compile区别在于implementation指令依赖是不会传递的，即当前引用的第三方库仅限于本module内使用*/
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     implementation "com.android.support:appcompat-v7:$support_version"

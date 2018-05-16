@@ -46,11 +46,8 @@ public class MainActivity extends AppBaseActivity {
 
             case R.id.button:
                 //按钮点击
-                String signature = CommonUtils.getSignature(this);
-                String rsaKey = new JniUtil().getRsaKey(this);
-                LogUtils.e(TAG,rsaKey);
-//                Log.e(TAG,signature);
-
+                String baseUrl = BuildConfig.BASE_URL;
+                LogUtils.e(baseUrl);
 
                 break;
         }

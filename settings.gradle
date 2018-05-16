@@ -1,1 +1,2 @@
+/*setting文件用于初始化以及工程树配置*/
 include ':app', ':common_library'
