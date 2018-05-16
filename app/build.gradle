@@ -97,7 +97,7 @@ android {
             minifyEnabled true//是否混淆编译
             zipAlignEnabled true//是否使用Zipalign工具压缩
             shrinkResources true//是否移除未利用的资源文件
-            versionNameSuffix "-release" //打包出来的后缀名
+            versionNameSuffix "-release" //版本名称后缀
             //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
@@ -131,7 +131,7 @@ android {
             //应用包名
             applicationId "com.cvsong.study.rice.testA"
             //应用版本名称
-            versionName "rice-testA-v1.0.0"
+            versionName "rice-testA-v$version_name"
             //占位符,可以通过它动态配置AndroidManifest文件一些内容
             manifestPlaceholders = [APP_NAME: "RiceA测试版"]
             //为BuildConfig文件生成自定义变量名
@@ -142,7 +142,7 @@ android {
         riceB {
             dimension "test"
             applicationId "com.cvsong.study.rice.testB"
-            versionName "rice-testB-v1.0.0"
+            versionName "rice-testB-v$version_name"
             manifestPlaceholders = [APP_NAME: "RiceB测试版"]
             buildConfigField "String", "BASE_URL", "\"testB_URL\""
         }
