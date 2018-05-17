@@ -6,12 +6,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cvsong.study.library.ndk.JniUtil;
-import com.cvsong.study.library.util.CommonUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseActivity;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppBaseActivity {
 
@@ -20,6 +24,8 @@ public class MainActivity extends AppBaseActivity {
     TextView textView;
     @BindView(R.id.button)
     Button button;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     @Override
     public int bindLayout() {
@@ -32,6 +38,26 @@ public class MainActivity extends AppBaseActivity {
         titleView.setLeftSubTitleVisibility(View.GONE);
         button.setOnClickListener(this);
 
+
+        initRefreshLayout();
+
+    }
+
+    private void initRefreshLayout() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+
+//        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+            }
+        });
     }
 
 
@@ -54,4 +80,6 @@ public class MainActivity extends AppBaseActivity {
                 break;
         }
     }
+
+
 }

@@ -17,6 +17,14 @@
     </declare-styleable>
 
 
+
+    <!--子View悬浮的ScroolView-->
+    <declare-styleable name="StickyScrollView">
+        <attr name="stuckShadowHeight" format="dimension" />
+        <attr name="stuckShadowDrawable" format="reference" />
+    </declare-styleable>
+
+
     <!-- 可清空编辑框属性 -->
     <declare-styleable name="EditTextWithDel">
         <attr name="delSrc" format="reference"/>
