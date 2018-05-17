@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--标题View颜色值-->
+    <color name="title_background">#3FA9C4</color>
+    <color name="title_font_white">#FFFFFF</color>
+
+
+    <!--标题字体大小-->
+    <dimen name="title_font_normal">16sp</dimen>
+    <dimen name="title_font_other">14sp</dimen>
+
+
+</resources>

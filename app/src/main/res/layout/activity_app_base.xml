@@ -6,13 +6,10 @@
               android:background="@android:color/white"
               android:orientation="vertical">
 
-<!--    <com.vcredit.android.creditcat.support.common.ui.TitleBar
-        android:id="@+id/titleBar"
+    <com.cvsong.study.common_library.wiget.titleview.CustomTitleView
+        android:id="@+id/title_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>-->
-
-
-
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

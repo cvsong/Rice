@@ -3,13 +3,16 @@ package com.cvsong.study.rice.base;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.cvsong.study.common_library.base.BaseActivity;
 import com.cvsong.study.common_library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.common_library.wiget.statuslayout.OnShowHideViewListener;
 import com.cvsong.study.common_library.wiget.statuslayout.StatusLayoutManager;
+import com.cvsong.study.common_library.wiget.titleview.CustomTitleView;
 import com.cvsong.study.rice.R;
+import com.jaeger.library.StatusBarUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -22,19 +25,21 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
     protected StatusLayoutManager statusLayoutManager;
     private LinearLayout llContent;
     private Unbinder unbinder;
+    protected CustomTitleView titleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setThemStyle();//设置主题样式
-
         setContentView(R.layout.activity_app_base);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
 
         TAG = this.getClass().getSimpleName();
 
-        llContent = (LinearLayout) findViewById(R.id.ll_content);
+        llContent = findViewById(R.id.ll_content);
+        titleView = findViewById(R.id.title_view);
 
+        initTitle();//初始化标题栏设置
         initStatusLayout();//初始化多状态布局
         unbinder = ButterKnife.bind(this);//绑定黄油刀
         initView(savedInstanceState,llContent);//View初始化
@@ -50,6 +55,14 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
 
     }
 
+
+    /**
+     * 初始化标题栏设置
+     */
+    private void initTitle() {
+        titleView.setLeftSubtitleText("返回");
+        titleView.setTitleBackgroundColor(getResources().getColor(R.color.bg_blue_3fa9c4));
+    }
 
     /**
      * 初始化多状态布局

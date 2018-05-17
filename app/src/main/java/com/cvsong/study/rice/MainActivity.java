@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.cvsong.study.common_library.util.CommonUtils;
 import com.cvsong.study.common_library.util.utilcode.util.LogUtils;
+import com.cvsong.study.common_library.wiget.titleview.StatusBarUtil;
 import com.cvsong.study.rice.base.AppBaseActivity;
 import com.cvsong.study.rice.ndk.JniUtil;
 
@@ -29,7 +30,11 @@ public class MainActivity extends AppBaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState, View view) {
+        titleView.setTitleText("主页面");
+        titleView.setLeftSubTitleVisibility(View.GONE);
         button.setOnClickListener(this);
+
+
     }
 
 
@@ -45,9 +50,9 @@ public class MainActivity extends AppBaseActivity {
         switch (view.getId()) {
 
             case R.id.button:
-                //按钮点击
-                String baseUrl = BuildConfig.BASE_URL;
-                LogUtils.e(baseUrl);
+
+                String appVersionName = CommonUtils.getAppVersionName(this);
+                LogUtils.e(appVersionName);
 
                 break;
         }
