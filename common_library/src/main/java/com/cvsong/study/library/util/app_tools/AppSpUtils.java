@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
 
 
+import com.cvsong.study.library.util.utilcode.util.Utils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -68,7 +70,7 @@ public class AppSpUtils {
     }
 
     private AppSpUtils(final String spName) {
-        sp = AppUtils.getContext().getSharedPreferences(spName, Context.MODE_PRIVATE);
+        sp = Utils.getApp().getSharedPreferences(spName, Context.MODE_PRIVATE);
     }
 
     /**

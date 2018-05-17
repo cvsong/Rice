@@ -15,7 +15,6 @@ import com.cvsong.study.library.net.interfaces.IHttpResponseCallBack;
 import com.cvsong.study.library.net.interfaces.IHttpUrlManage;
 import com.cvsong.study.library.util.RSAUtil;
 import com.cvsong.study.library.util.app_tools.AppSpUtils;
-import com.cvsong.study.library.util.app_tools.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 
 
@@ -364,7 +363,7 @@ public class OkHttpRequestManage implements IHttpRequest {
             String result;
             if (HttpConstants.RSA_SWITCH) {//加解密开关
                 //对数据进行解密
-                String rsaKey = new JniUtil().getRsaKey(AppUtils.getContext());
+                String rsaKey = new JniUtil().getRsaKey(Utils.getApp());
                 result = RSAUtil.decryptByPrivateKey(resStr, rsaKey);//内部已做Base64转换
             } else {
                 result = resStr;
