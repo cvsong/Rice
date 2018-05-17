@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--自定义底部导航栏-->
+    <declare-styleable name="CustomBottomNavigationView">
+        <attr name="top_icon" format="string"/>
+        <attr name="bottom_text" format="string"/>
+    </declare-styleable>
+
+
+    <!--圆形图像控件-->
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_color" format="color"/>
+        <attr name="civ_border_overlay" format="boolean"/>
+        <attr name="civ_fill_color" format="color"/>
+    </declare-styleable>
+
+
+    <!-- 可清空编辑框属性 -->
+    <declare-styleable name="EditTextWithDel">
+        <attr name="delSrc" format="reference"/>
+    </declare-styleable>
+
+
+    <!--侧滑删除功能的View-->
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean"/>
+        <attr name="ios" format="boolean"/>
+        <attr name="leftSwipe" format="boolean"/>
+    </declare-styleable>
+
+
+</resources>

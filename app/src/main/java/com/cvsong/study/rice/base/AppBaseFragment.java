@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.cvsong.study.common_library.wiget.statuslayout.OnRetryListener;
-import com.cvsong.study.common_library.wiget.statuslayout.OnShowHideViewListener;
-import com.cvsong.study.common_library.wiget.statuslayout.StatusLayoutManager;
+import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
+import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
+import com.cvsong.study.library.wiget.statuslayout.StatusLayoutManager;
 import com.cvsong.study.rice.R;
 
 import butterknife.ButterKnife;

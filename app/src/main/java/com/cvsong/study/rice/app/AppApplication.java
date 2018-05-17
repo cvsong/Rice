@@ -2,12 +2,12 @@ package com.cvsong.study.rice.app;
 
 import android.annotation.SuppressLint;
 
-import com.cvsong.study.common_library.base.BaseApplication;
-import com.cvsong.study.common_library.util.utilcode.util.AppUtils;
-import com.cvsong.study.common_library.util.utilcode.util.CrashUtils;
-import com.cvsong.study.common_library.util.utilcode.util.LogUtils;
-import com.cvsong.study.common_library.util.utilcode.util.Utils;
-import com.cvsong.study.rice.BuildConfig;
+import com.cvsong.study.library.BuildConfig;
+import com.cvsong.study.library.base.BaseApplication;
+import com.cvsong.study.library.util.utilcode.util.AppUtils;
+import com.cvsong.study.library.util.utilcode.util.CrashUtils;
+import com.cvsong.study.library.util.utilcode.util.LogUtils;
+import com.cvsong.study.library.util.utilcode.util.Utils;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -15,37 +15,40 @@ import com.squareup.leakcanary.LeakCanary;
  */
 public class AppApplication extends BaseApplication {
 
-    private static AppApplication sInstance;
+    private static AppApplication instance;
 
     public static AppApplication getInstance() {
-        return sInstance;
+        return instance;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
-        Utils.init(this);
-        initLeakCanary();
-        initLog();
-        initCrash();
+        instance = this;
+        Utils.init(this);//初始化全局Context以及Activity堆栈管理
+        initLeakCanary();//初始化内存泄露检查工具
+        initLog();//初始化Log日志打印设置
+        initCrash();//初始化Crash捕捉
+
     }
 
+    /**
+     * 初始化内存泄露检查工具
+     */
     private void initLeakCanary() {
-        // 内存泄露检查工具
         if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);
     }
 
-    // init it in ur application
+    /**
+     * 初始化Log日志打印设置
+     */
     public void initLog() {
         final LogUtils.Config config = LogUtils.getConfig()
-                .setLogSwitch(true)// 设置 log 总开关，包括输出到控制台和文件，默认开
-                .setConsoleSwitch(true)// 设置是否输出到控制台开关，默认开
+                .setLogSwitch(BuildConfig.DEBUG)// 设置 log 总开关，包括输出到控制台和文件，默认开
+                .setConsoleSwitch(BuildConfig.DEBUG)// 设置是否输出到控制台开关，默认开
                 .setGlobalTag(null)// 设置 log 全局标签，默认为空
                 // 当全局标签不为空时，我们输出的 log 全部为该 tag，
                 // 为空时，如果传入的 tag 为空那就显示类名，否则显示 tag
@@ -62,6 +65,10 @@ public class AppApplication extends BaseApplication {
         LogUtils.d(config.toString());
     }
 
+
+    /**
+     * 初始化Crash捕捉
+     */
     @SuppressLint("MissingPermission")
     private void initCrash() {
         CrashUtils.init(new CrashUtils.OnCrashListener() {

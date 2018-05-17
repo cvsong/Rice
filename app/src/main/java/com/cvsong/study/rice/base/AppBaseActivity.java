@@ -3,16 +3,14 @@ package com.cvsong.study.rice.base;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.cvsong.study.common_library.base.BaseActivity;
-import com.cvsong.study.common_library.wiget.statuslayout.OnRetryListener;
-import com.cvsong.study.common_library.wiget.statuslayout.OnShowHideViewListener;
-import com.cvsong.study.common_library.wiget.statuslayout.StatusLayoutManager;
-import com.cvsong.study.common_library.wiget.titleview.CustomTitleView;
+import com.cvsong.study.library.base.BaseActivity;
+import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
+import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
+import com.cvsong.study.library.wiget.statuslayout.StatusLayoutManager;
+import com.cvsong.study.library.wiget.titleview.CustomTitleView;
 import com.cvsong.study.rice.R;
-import com.jaeger.library.StatusBarUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

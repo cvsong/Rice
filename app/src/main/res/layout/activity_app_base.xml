@@ -6,7 +6,7 @@
               android:background="@android:color/white"
               android:orientation="vertical">
 
-    <com.cvsong.study.common_library.wiget.titleview.CustomTitleView
+    <com.cvsong.study.library.wiget.titleview.CustomTitleView
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

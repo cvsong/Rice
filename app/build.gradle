@@ -47,12 +47,7 @@ android {
             }
         }
 
-        /*ndk{}多平台编译,生成有so库的时候使用*/
-        ndk {
-            moduleName "jniutil"
-            //设置支持的so库架构
-            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-        }
+
     }
 
     /*
