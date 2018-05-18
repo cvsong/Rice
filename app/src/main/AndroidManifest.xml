@@ -6,8 +6,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
+    <!--相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- sd卡 -->
+    <!-- 读写sd卡 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
