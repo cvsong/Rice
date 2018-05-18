@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--id值-->
+    <item name="st_page_fragment" type="id"/>
+
+    <!--dimen值-->
+    <dimen name="st_indicator_size_default">4dp</dimen>
+    <dimen name="st_indicator_spacing_default">4dp</dimen>
+
+
+</resources>

@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.cvsong.study.library.util.utilcode.util.ToastUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseActivity;
 

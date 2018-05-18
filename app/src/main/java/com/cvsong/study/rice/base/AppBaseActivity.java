@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cvsong.study.library.base.BaseActivity;
+import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
 import com.cvsong.study.library.wiget.statuslayout.StatusLayoutManager;
@@ -60,6 +61,13 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
     private void initTitle() {
         titleView.setLeftSubtitleText("返回");
         titleView.setTitleBackgroundColor(getResources().getColor(R.color.bg_blue_3fa9c4));
+        titleView.setLeftSubTitleClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {//统一处理---->左边点击关闭当前页面
+                Class<? extends AppBaseActivity> clazz = AppBaseActivity.this.getClass();
+                ActivityUtils.finishActivity(clazz);
+            }
+        });
     }
 
     /**
