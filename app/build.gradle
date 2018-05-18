@@ -20,6 +20,11 @@ android {
     buildToolsVersion build_tools_version
 
 
+
+    //打包配置
+    //1、pickFirsts:当出现重复文件，会使用第一个匹配的文件打包进入apk
+    //2、merges:当出现重复文件，合并重复的文件打入apk
+    //3、excludes:打包的时候排除匹配的文件
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -60,7 +65,8 @@ android {
                 reset()
                 //为不同的CPU架构创建不同的APK
                 include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
-                universalApk true //generate an additional APK that contains all the ABIs
+                //是否打出一个全量的包
+                universalApk true
             }
         }
 
