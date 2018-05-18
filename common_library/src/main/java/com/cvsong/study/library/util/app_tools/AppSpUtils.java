@@ -21,7 +21,11 @@ public class AppSpUtils {
 
     /******************************SP常量***************************************/
     //用户是否已登录
-    public static String IS_USER_LOGINED = "is_user_logined";
+    public static String IS_USER_LOGIN = "is_user_login";
+
+    //是否是再次打开
+    public static String IS_OPEN_AGAIN = "is_open_again";
+
 
     //用户令牌
     public static final String ACCESS_TOKEN = "access_token";
@@ -32,13 +36,6 @@ public class AppSpUtils {
 
     //是否保存用户密码
     public static final String IS_SAVA_USER_PSW = "is_sava_user_psw";
-
-
-
-
-
-
-
 
 
     /******************************SP常用方法***************************************/

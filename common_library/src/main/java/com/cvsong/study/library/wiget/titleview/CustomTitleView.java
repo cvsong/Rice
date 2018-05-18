@@ -106,6 +106,14 @@ public class CustomTitleView extends FrameLayout implements ICustomTitleView {
         StatusBarUtil.setColor(activity, statusBarColor);
     }
 
+    @Override
+    public void setTitleVisibility(int visibility) {
+        if (viewTitle==null) {
+            return;
+        }
+        viewTitle.setVisibility(visibility);
+    }
+
     /******************针对主标题的设置******************/
 
     @Override

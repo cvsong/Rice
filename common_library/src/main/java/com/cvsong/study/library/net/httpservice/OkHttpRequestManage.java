@@ -281,7 +281,7 @@ public class OkHttpRequestManage implements IHttpRequest {
 
         String jsonStr = object == null ? "" : GsonUtil.GsonString(object);
         final String httpUrl = httpUrlManage.getUrl();
-        boolean userIsLogin = AppSpUtils.getInstance().getBoolean(AppSpUtils.IS_USER_LOGINED);
+        boolean userIsLogin = AppSpUtils.getInstance().getBoolean(AppSpUtils.IS_USER_LOGIN);
         String token = AppSpUtils.getInstance().getString(AppSpUtils.ACCESS_TOKEN);
 
         LogUtils.e(TAG, "用户是否已登录:" + userIsLogin);

@@ -19,8 +19,6 @@ android {
     /*buildToolsVersion-构建该Android工程所用构建工具的版本*/
     buildToolsVersion build_tools_version
 
-
-
     //打包配置
     //1、pickFirsts:当出现重复文件，会使用第一个匹配的文件打包进入apk
     //2、merges:当出现重复文件，合并重复的文件打入apk
@@ -38,8 +36,6 @@ android {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/ASL2.0'
     }
-
-
 
     /*defaultConfig{}是默认的配置,它是一个ProductFlavor.ProductFlavor允许根据不同的情况同时生成不同的apk包*/
     defaultConfig {
@@ -182,7 +178,6 @@ dependencies {
 
     /*implementation和compile区别在于implementation指令依赖是不会传递的，即当前引用的第三方库仅限于本module内使用*/
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"

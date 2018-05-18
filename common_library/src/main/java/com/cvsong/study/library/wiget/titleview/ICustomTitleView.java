@@ -18,6 +18,7 @@ public interface ICustomTitleView {
 
     void setTitleBackgroundColor(@ColorInt int backgroundColor, @ColorInt int statusBarColor);
 
+    void setTitleVisibility(@CustomTitleView.Visibility int visibility);
 
     /******************针对主标题的设置******************/
 
