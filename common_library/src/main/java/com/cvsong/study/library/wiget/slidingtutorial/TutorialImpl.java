@@ -98,6 +98,8 @@ final class TutorialImpl<TFragment> {
         mTutorialAdapter = mInternalFragment.getPagerAdapter();
         mTutorialAdapter.registerDataSetObserver(mDataSetObservable);
         mViewPager.setAdapter(mTutorialAdapter);
+        //解决快速滑动时'java.lang.IndexOutOfBoundsException: Invalid index 2, size is 2'问题
+        mViewPager.setOffscreenPageLimit(mTutorialOptions.getPagesCount()-1);
         if (mPageIndicator != null) {
             mPageIndicator.initWith(mTutorialOptions.getIndicatorOptions(), mTutorialOptions.getPagesCount());
         }

@@ -38,7 +38,7 @@ public class MainActivity extends AppBaseActivity {
             public void run() {
                 judgeIsSkipGuidePage();
             }
-        }, 5000);
+        }, 3000);
 
 
 

@@ -75,7 +75,7 @@ public class AppApplication extends BaseApplication {
             @Override
             public void onCrash(String crashInfo, Throwable e) {
                 LogUtils.e(crashInfo);
-                AppUtils.relaunchApp();
+//                AppUtils.relaunchApp();//是否重启应用
             }
         });
     }

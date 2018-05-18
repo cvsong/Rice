@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--视差效果引导页资源文件-->
+
     <!--id值-->
     <item name="st_page_fragment" type="id"/>
 

@@ -37,7 +37,7 @@
             android:textSize="21sp"
             tools:ignore="UnusedAttribute"/>
 
-        <com.vcredit.android.creditcat.support.wiget.slidingtutorial.TutorialPageIndicator
+        <com.cvsong.study.library.wiget.slidingtutorial.TutorialPageIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
