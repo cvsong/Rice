@@ -19,6 +19,23 @@ android {
     /*buildToolsVersion-构建该Android工程所用构建工具的版本*/
     buildToolsVersion build_tools_version
 
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+    }
+
+
+
     /*defaultConfig{}是默认的配置,它是一个ProductFlavor.ProductFlavor允许根据不同的情况同时生成不同的apk包*/
     defaultConfig {
         /*applicationId-应用包名*/
@@ -160,9 +177,6 @@ dependencies {
     /*implementation和compile区别在于implementation指令依赖是不会传递的，即当前引用的第三方库仅限于本module内使用*/
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support:support-v4:$support_version"
-    implementation "com.android.support:design:$support_version"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"

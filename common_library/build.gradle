@@ -12,7 +12,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-
         /*ndk{}多平台编译,生成有so库的时候使用*/
         ndk {
             moduleName "jniutil"
@@ -40,8 +39,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
+
     /*刷新控件*/
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
+    compile "com.scwang.smartrefresh:SmartRefreshLayout:$smart_refresh_layout"
+    compile "com.scwang.smartrefresh:SmartRefreshHeader:$smart_refresh_layout"//没有使用特殊Header，可以不加这行
+
+    /*图片加载工具-Glide*/
+    compile "com.github.bumptech.glide:glide:$gilde_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$gilde_version"
 
 }

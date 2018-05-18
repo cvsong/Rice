@@ -18,7 +18,6 @@ buildscript {
     }
 }
 
-
 /*allprojects{}声明所有module所需要使用的资源*/
 allprojects {
     /*repositories{}为所有的module提供共同所需的依赖包*/
@@ -34,10 +33,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-
-
 /*ext{}是自定义属性*/
-ext{
+ext {
 
     // Sdk and tools
     compile_sdk_version = 26
@@ -57,4 +54,15 @@ ext{
 
     junit_version = '4.12'
     robolectric_version = '3.1.2'
+
+    //第三方控件
+
+    /*图片加载工具-Glide*/
+    gilde_version = '4.3.0'
+
+    //刷新控件
+    smart_refresh_layout='1.1.0-alpha-5'
+
+
+
 }

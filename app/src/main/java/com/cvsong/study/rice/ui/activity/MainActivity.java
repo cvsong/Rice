@@ -3,8 +3,10 @@ package com.cvsong.study.rice.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cvsong.study.library.image.ImageLoadUtils;
 import com.cvsong.study.library.ndk.JniUtil;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.rice.R;
@@ -26,6 +28,8 @@ public class MainActivity extends AppBaseActivity {
     Button button;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.iv_img)
+    ImageView ivImg;
 
     @Override
     public int bindLayout() {
@@ -74,8 +78,11 @@ public class MainActivity extends AppBaseActivity {
 
             case R.id.button:
 
-                String rsaKey = new JniUtil().getRsaKey(this);
-                LogUtils.e(rsaKey);
+                String url = "http://image.tianjimedia.com/uploadImages/2013/072/5H0508UU5NCW.jpg";
+                ImageLoadUtils.getInstance().loadImage(url, ivImg);
+
+//                String rsaKey = new JniUtil().getRsaKey(this);
+//                LogUtils.e(rsaKey);
 
                 break;
         }

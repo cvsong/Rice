@@ -23,3 +23,39 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#--------------------------------第三方工具混淆配置--------------------------------
+
+
+#--------Glide混淆配置--------start
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+#--------Glide混淆配置--------end
