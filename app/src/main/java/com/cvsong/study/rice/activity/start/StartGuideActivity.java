@@ -1,8 +1,6 @@
 package com.cvsong.study.rice.activity.start;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -24,7 +22,7 @@ public class StartGuideActivity extends AppBaseActivity {
 
     private static final int TOTAL_PAGES = 6;
     private static final int ACTUAL_PAGES_COUNT = 3;
-    private int[] mPagesColors;
+    private int[] pagesColors;
 
     @Override
     public int bindLayout() {
@@ -35,8 +33,7 @@ public class StartGuideActivity extends AppBaseActivity {
     public void initView(Bundle savedInstanceState, View view) {
         titleView.setTitleVisibility(View.GONE);
 
-        findViewById(R.id.bRetry).setOnClickListener(this);
-        mPagesColors = new int[]{
+        pagesColors = new int[]{
                 ContextCompat.getColor(this, android.R.color.darker_gray),
                 ContextCompat.getColor(this, android.R.color.holo_green_dark),
                 ContextCompat.getColor(this, android.R.color.holo_red_dark),
@@ -59,15 +56,16 @@ public class StartGuideActivity extends AppBaseActivity {
         final IndicatorOptions indicatorOptions = IndicatorOptions.newBuilder(this)
                 .build();
         final TutorialOptions tutorialOptions = TutorialFragment.newTutorialOptionsBuilder(this)
-                .setUseAutoRemoveTutorialFragment(true)
+                .setUseAutoRemoveTutorialFragment(false)//是否自动移除Fragment
                 .setUseInfiniteScroll(false)//是否循环
-                .setPagesColors(mPagesColors)
+                .setPagesColors(pagesColors)
                 .setPagesCount(TOTAL_PAGES)
                 .setIndicatorOptions(indicatorOptions)
                 .setTutorialPageProvider(new TutorialPagesProvider())
                 .setOnSkipClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ActivityUtils.finishActivity(StartGuideActivity.class);
                         ActivityUtils.startActivity(HomeActivity.class);
                     }
                 })
@@ -105,19 +103,6 @@ public class StartGuideActivity extends AppBaseActivity {
                     break;
                 }
                 case 1: {
-                    pageLayoutResId = R.layout.fragment_page_third;
-                    tutorialItems = new TransformItem[]{
-                            TransformItem.create(R.id.ivFirstImage, Direction.RIGHT_TO_LEFT, 0.20f),
-                            TransformItem.create(R.id.ivSecondImage, Direction.LEFT_TO_RIGHT, 0.06f),
-                            TransformItem.create(R.id.ivThirdImage, Direction.RIGHT_TO_LEFT, 0.08f),
-                            TransformItem.create(R.id.ivFourthImage, Direction.LEFT_TO_RIGHT, 0.1f),
-                            TransformItem.create(R.id.ivFifthImage, Direction.LEFT_TO_RIGHT, 0.03f),
-                            TransformItem.create(R.id.ivSixthImage, Direction.LEFT_TO_RIGHT, 0.09f),
-                            TransformItem.create(R.id.ivSeventhImage, Direction.LEFT_TO_RIGHT, 0.14f)
-                    };
-                    break;
-                }
-                case 2: {
                     pageLayoutResId = R.layout.fragment_page_second;
                     tutorialItems = new TransformItem[]{
                             TransformItem.create(R.id.ivFirstImage, Direction.RIGHT_TO_LEFT, 0.2f),
@@ -129,6 +114,20 @@ public class StartGuideActivity extends AppBaseActivity {
                             TransformItem.create(R.id.ivSeventhImage, Direction.LEFT_TO_RIGHT, 0.14f),
                             TransformItem.create(R.id.ivEighthImage, Direction.LEFT_TO_RIGHT, 0.07f)
                     };
+                    break;
+                }
+                case 2: {
+                    pageLayoutResId = R.layout.fragment_page_third;
+                    tutorialItems = new TransformItem[]{
+                            TransformItem.create(R.id.ivFirstImage, Direction.RIGHT_TO_LEFT, 0.20f),
+                            TransformItem.create(R.id.ivSecondImage, Direction.LEFT_TO_RIGHT, 0.06f),
+                            TransformItem.create(R.id.ivThirdImage, Direction.RIGHT_TO_LEFT, 0.08f),
+                            TransformItem.create(R.id.ivFourthImage, Direction.LEFT_TO_RIGHT, 0.1f),
+                            TransformItem.create(R.id.ivFifthImage, Direction.LEFT_TO_RIGHT, 0.03f),
+                            TransformItem.create(R.id.ivSixthImage, Direction.LEFT_TO_RIGHT, 0.09f),
+                            TransformItem.create(R.id.ivSeventhImage, Direction.LEFT_TO_RIGHT, 0.14f)
+                    };
+
                     break;
                 }
                 default: {

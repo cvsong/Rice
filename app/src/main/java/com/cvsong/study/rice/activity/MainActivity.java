@@ -33,13 +33,13 @@ public class MainActivity extends AppBaseActivity {
         //TODO 更新判断
 
         //判断是否跳转引导页
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                judgeIsSkipGuidePage();
-            }
-        }, 3000);
-
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }, 3000);
+        judgeIsSkipGuidePage();
 
 
     }
