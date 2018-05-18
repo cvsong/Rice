@@ -12,7 +12,7 @@ public class ImageLoadUtils {
 
     private static ImageLoadUtils imageLoadUtils;
 
-    private IImageLoadManager imageLoadManager = new GlideImageManagerLoadManager();
+    private IImageLoadManager imageLoadManager = new GlideImageLoadManager();
 
     public static ImageLoadUtils getInstance() {
 

@@ -10,7 +10,7 @@ import com.cvsong.study.library.util.utilcode.util.Utils;
  * Created by chenweisong on 2018/5/17.
  */
 
-public class GlideImageManagerLoadManager implements IImageLoadManager {
+public class GlideImageLoadManager implements IImageLoadManager {
 
 
     @Override
