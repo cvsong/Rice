@@ -39,7 +39,7 @@ ext {
     // Sdk and tools
     compile_sdk_version = 27
     build_tools_version = "26.0.2"
-    min_sdk_version = 14
+    min_sdk_version = 16
     target_sdk_version = 27
 
     //应用信息

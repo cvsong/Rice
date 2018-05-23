@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import com.cvsong.study.library.util.app_tools.AppSpUtils;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.library.wiget.slidingtutorial.Direction;
 import com.cvsong.study.library.wiget.slidingtutorial.IndicatorOptions;
@@ -65,6 +66,7 @@ public class StartGuideActivity extends AppBaseActivity {
                 .setOnSkipClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppSpUtils.getInstance().put(AppSpUtils.IS_OPEN_AGAIN, true);
                         ActivityUtils.finishActivity(StartGuideActivity.class);
                         ActivityUtils.startActivity(HomeActivity.class);
                     }

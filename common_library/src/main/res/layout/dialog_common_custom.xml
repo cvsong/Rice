@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_corner4_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="我是标题"
+            android:textColor="@color/font_black_333333"
+            android:textSize="@dimen/fontSize_18" />
+
+        <FrameLayout
+            android:id="@+id/fl_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/tv_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="内容部分"
+                android:textColor="@color/font_gray_666666"
+                android:textSize="@dimen/fontSize_14" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btn_custom_dialog_cancle"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="left"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_white34b2d1_white2396b3"
+                android:text="取消"
+                android:textColor="@color/font_gray_666666"
+                android:textSize="@dimen/fontSize_14" />
+
+            <Button
+                android:id="@+id/btn_custom_dialog_sure"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:text="确定"
+                android:background="@drawable/selector_blue_grayd9"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/fontSize_14" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:visibility="visible"
+        android:padding="15dp"
+        android:id="@+id/iv_cancle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@mipmap/icon_dialog_cl" />
+</FrameLayout>

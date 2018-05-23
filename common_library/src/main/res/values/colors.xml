@@ -2,7 +2,39 @@
 <resources>
 
 
+    <!--透明-->
+    <color name="transparent">#00000000</color>
 
+
+
+    <!--背景颜色-->
+    <color name="bg_white">#ffffff</color>
+
+
+    <color name="bg_blue">#0000ff</color>
+    <color name="bg_blue_3fa9c4">#3FA9C4</color>
+    <color name="bg_blue_2396b3">#2396b3</color>
+    <color name="bg_blue_34b2d1">#34b2d1</color>
+
+
+    <color name="bg_gray_b3b3b3">#b3b3b3</color>
+    <color name="bg_gray_d9d9d9">#d9d9d9</color>
+
+
+
+
+
+
+    <!--字体颜色-->
+    <color name="font_white">#ffffff</color>
+    <color name="font_black_333333">#333333</color>
+    <color name="font_gray_666666">#666666</color>
+
+
+
+
+    <!--分隔线颜色-->
+    <color name="divider_e1e1e1">#e1e1e1</color>
 
 
 </resources>

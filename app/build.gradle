@@ -19,6 +19,12 @@ android {
     /*buildToolsVersion-构建该Android工程所用构建工具的版本*/
     buildToolsVersion build_tools_version
 
+    /*编译设置*/
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     //打包配置
     //1、pickFirsts:当出现重复文件，会使用第一个匹配的文件打包进入apk
     //2、merges:当出现重复文件，合并重复的文件打入apk

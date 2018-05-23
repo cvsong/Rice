@@ -1,0 +1,31 @@
+<resources>
+
+
+
+    <!--自定义Dialog样式-->
+    <style name="dialog_custom" parent="android:style/Theme.Dialog">
+        <!-- 窗口背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否去掉标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 屏幕背景是否暗淡 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 屏幕背景暗淡程度 -->
+        <item name="android:backgroundDimAmount">0.3</item>
+        <!-- 窗口外触摸时是否关闭窗口 -->
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+
+
+
+    <!--透明Activity主题-->
+    <style name="Transparent_Activity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

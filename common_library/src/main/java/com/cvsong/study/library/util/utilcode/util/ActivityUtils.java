@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.AnimRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -1216,4 +1218,17 @@ public final class ActivityUtils {
         }
         return ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairs).toBundle();
     }
+
+
+    /**
+     * 跳转到设置页面
+     */
+    public static void startAppSettingActivity() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromParts("package", AppUtils.getAppPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
 }

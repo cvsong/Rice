@@ -1,15 +1,19 @@
 package com.cvsong.study.rice.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.cvsong.study.library.util.app_tools.AppSpUtils;
+import com.cvsong.study.library.util.permission.AppPermissionEntity;
+import com.cvsong.study.library.util.permission.AppPermissionsManager;
+import com.cvsong.study.library.util.permission.AppSettingsHolderActivity;
+import com.cvsong.study.library.util.permission.IPermissionCallbacks;
+import com.cvsong.study.library.util.permission.PermissionRequestCallback;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
-import com.cvsong.study.library.util.utilcode.util.ToastUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.activity.start.StartGuideActivity;
 import com.cvsong.study.rice.base.AppBaseActivity;
@@ -17,18 +21,56 @@ import com.cvsong.study.rice.base.AppBaseActivity;
 import java.util.List;
 
 import butterknife.BindView;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
-import pub.devrel.easypermissions.PermissionRequest;
 
-public class MainActivity extends AppBaseActivity implements EasyPermissions.PermissionCallbacks{
 
-    private static final int RC_APP_NEED_PERMISSIONS = 123;
-    private static final String[] NEED_PERMISSIONS =
-            {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+public class MainActivity extends AppBaseActivity {
+
+
     @BindView(R.id.iv_img)
     ImageView ivImg;
+
+    private AppPermissionEntity[] perms;
+
+
+    private IPermissionCallbacks permissionCallback = new PermissionRequestCallback() {
+
+        @Override
+        public void onAllPermissionsGranted(int requestCode, @NonNull List<AppPermissionEntity> appPermissions) {
+            super.onAllPermissionsGranted(requestCode, appPermissions);
+            judgeIsSkipGuidePage(); //判断是否跳转引导页
+        }
+
+
+        //        @Override
+//        public void onSomePermissionsNotGranted(Context context, int requestCode, @NonNull List<AppPermissionEntity> grantedPermissions, @NonNull List<AppPermissionEntity> deniedPermissions) {
+//            StringBuilder sb = new StringBuilder();
+//            for (AppPermissionEntity entity : deniedPermissions) {
+//                sb.append(entity.getPermissionName() + " ");
+//            }
+//            String permissionNames = sb.toString().trim();
+//            CustomDialogManager.newBuilder(MainActivity.this)
+//                    .titleText("温馨提示")
+//                    .contentText(String.format("本应用的使用必须拥有%s的权限,请到应用设置开通.", permissionNames))
+//                    .negativeButtonText("取消")
+//                    .negativeListener(new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            ActivityUtils.finishActivity(MainActivity.class);
+//                        }
+//                    })
+//                    .positiveButtonText("设置")
+//                    .positiveListener(new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            AppSettingsHolderActivity.start(MainActivity.this, RC_APP_SETTING);
+//                        }
+//                    })
+//                    .build().show();
+//        }
+    };
+
 
     @Override
     public int bindLayout() {
@@ -45,30 +87,21 @@ public class MainActivity extends AppBaseActivity implements EasyPermissions.Per
 
     @Override
     public void loadData() {
-
         //App6.0权限申请
         requestAppNeedPermissions();
 
         //TODO 更新判断
 
-
     }
+
 
 
     /**
      * 请求App所需权限
      */
-    @AfterPermissionGranted(RC_APP_NEED_PERMISSIONS)
     public void requestAppNeedPermissions() {
-        if (EasyPermissions.hasPermissions(this, NEED_PERMISSIONS)) {//判断是否拥有所需权限
-            //判断是否跳转引导页
-            judgeIsSkipGuidePage();
-
-        } else {//请求权限
-            EasyPermissions.requestPermissions(
-                    this, "需要使用相机和读写SD卡权限",
-                    RC_APP_NEED_PERMISSIONS, NEED_PERMISSIONS);
-        }
+        perms = new AppPermissionEntity[]{new AppPermissionEntity(Manifest.permission.CAMERA, "相机"), new AppPermissionEntity(Manifest.permission.WRITE_EXTERNAL_STORAGE, "读写SD卡")};
+        AppPermissionsManager.requestPermissions(this, permissionCallback, perms);
     }
 
 
@@ -77,47 +110,17 @@ public class MainActivity extends AppBaseActivity implements EasyPermissions.Per
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        AppPermissionsManager.onRequestPermissionsResult(this, requestCode, perms, grantResults, permissionCallback);
     }
 
 
-    /**
-     * 再次请求权限时已有授权的权限回调
-     *
-     * @param requestCode
-     * @param perms
-     */
     @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-//        ToastUtils.showShort("onPermissionsGranted");
-    }
-
-    /**
-     * 权限被禁止时回调
-     *
-     * @param requestCode
-     * @param perms
-     */
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-
-        //权限被禁止-->
-
-        judgeIsSkipGuidePage();
-
-
-        //判断权限是否被永久禁止---
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-
-            //弹出跳转设置页面的弹窗-->可以自定义
-            new AppSettingsDialog.Builder(this)
-                    .setTitle("温馨提示")//设置弹窗标题
-                    .setRationale("被永久禁止的权限需要到设置中恢复...")//设置弹窗内容
-                    .build().show();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppSettingsHolderActivity.RC_APP_SETTING) {//跳转设置页面
+            requestAppNeedPermissions();
         }
     }
-
-
 
 
     /**
@@ -126,13 +129,10 @@ public class MainActivity extends AppBaseActivity implements EasyPermissions.Per
     private void judgeIsSkipGuidePage() {
         //是否再次打开
         boolean isOpenAgain = AppSpUtils.getInstance().getBoolean(AppSpUtils.IS_OPEN_AGAIN);
-        if (!isOpenAgain) {//第一次启动应用--->启动引导页面
-            ActivityUtils.finishActivity(MainActivity.class);
-            ActivityUtils.startActivity(StartGuideActivity.class);
-        } else {//再次启动-->主页面
-            ActivityUtils.finishActivity(MainActivity.class);
-            ActivityUtils.startActivity(HomeActivity.class);
-        }
+        ActivityUtils.finishActivity(MainActivity.class);//结束当前页面
+        //第一次启动应用--->启动引导页面否则跳转主页面
+        ActivityUtils.startActivity(isOpenAgain ? HomeActivity.class : StartGuideActivity.class);
+
     }
 
 
