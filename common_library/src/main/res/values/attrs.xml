@@ -3,7 +3,7 @@
 
     <!--自定义底部导航栏-->
     <declare-styleable name="CustomBottomNavigationView">
-        <attr name="top_icon" format="string"/>
+        <attr name="top_icon" format="reference"/>
         <attr name="bottom_text" format="string"/>
     </declare-styleable>
 

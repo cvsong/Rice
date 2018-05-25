@@ -1,10 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cvsong.study.rice.activity.HomeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider_e1e1e1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.cvsong.study.library.wiget.CustomBottomNavigationView
+            android:id="@+id/bottom_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bottom_text="哈哈"
+            app:top_icon="@drawable/selector_bottom_mine"/>
+
+
+        <com.cvsong.study.library.wiget.CustomBottomNavigationView
+            android:id="@+id/bottom_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bottom_text="呵呵"
+            app:top_icon="@drawable/selector_bottom_mine"/>
+
+
+        <com.cvsong.study.library.wiget.CustomBottomNavigationView
+            android:id="@+id/bottom_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bottom_text="嘿嘿"
+            app:top_icon="@drawable/selector_bottom_mine"/>
+
+
+        <com.cvsong.study.library.wiget.CustomBottomNavigationView
+            android:id="@+id/bottom_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bottom_text="嘻嘻"
+            app:top_icon="@drawable/selector_bottom_mine"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

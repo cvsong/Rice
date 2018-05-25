@@ -28,6 +28,9 @@
     <!--字体颜色-->
     <color name="font_white">#ffffff</color>
     <color name="font_black_333333">#333333</color>
+
+    <color name="font_blue_3fa9c4">#3FA9C4</color>
+
     <color name="font_gray_666666">#666666</color>
 
 

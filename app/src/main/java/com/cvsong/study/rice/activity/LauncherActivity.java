@@ -28,8 +28,11 @@ import java.util.List;
 
 import butterknife.BindView;
 
-
-public class MainActivity extends AppBaseActivity {
+/**
+ * 启动页
+ * Created by chenweisong on 2018/5/24.
+ */
+public class LauncherActivity extends AppBaseActivity {
 
 
     @BindView(R.id.iv_img)
@@ -52,7 +55,7 @@ public class MainActivity extends AppBaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_main;
+        return R.layout.activity_launcher;
     }
 
     @Override
@@ -144,7 +147,7 @@ public class MainActivity extends AppBaseActivity {
     private void judgeIsSkipGuidePage() {
         //是否再次打开
         boolean isOpenAgain = AppSpUtils.getInstance().getBoolean(AppSpUtils.IS_OPEN_AGAIN);
-        ActivityUtils.finishActivity(MainActivity.class);//结束当前页面
+        ActivityUtils.finishActivity(LauncherActivity.class);//结束当前页面
         //第一次启动应用--->启动引导页面否则跳转主页面
         ActivityUtils.startActivity(isOpenAgain ? HomeActivity.class : StartGuideActivity.class);
 

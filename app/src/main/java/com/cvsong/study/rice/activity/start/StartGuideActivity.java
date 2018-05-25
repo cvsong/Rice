@@ -19,6 +19,10 @@ import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.activity.HomeActivity;
 import com.cvsong.study.rice.base.AppBaseActivity;
 
+/**
+ * 启动引导页
+ * Created by chenweisong on 2018/5/24.
+ */
 public class StartGuideActivity extends AppBaseActivity {
 
     private static final int TOTAL_PAGES = 6;

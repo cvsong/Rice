@@ -40,7 +40,7 @@ public class AppHttpManage {
             private void initTestEntity(Result result) {
                 TestVersionUpdateEntity updateEntity = new TestVersionUpdateEntity();
                 updateEntity.setDownloadUrl("http://10.138.60.143:10000/apk/CreditCat1.5.1-A0001.apk");
-                updateEntity.setVersionCode(10);
+                updateEntity.setVersionCode(1);
                 updateEntity.setUpdateDesc("新版本解决了之前的bug,优化了用户体验...");
                 updateEntity.setHaveToUpdate(false);
                 callBack.onSuccess(result, updateEntity);
