@@ -33,7 +33,7 @@ public class AppHttpManage {
 
             @Override
             public void onFailure(Request request, Exception exception) {
-                super.onFailure(request, exception);
+//                super.onFailure(request, exception);
                 initTestEntity(null);
             }
 

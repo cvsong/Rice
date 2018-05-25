@@ -85,32 +85,39 @@ public class LauncherActivity extends AppBaseActivity {
             @Override
             public void onSuccess(Result result, TestVersionUpdateEntity entity) {
                 super.onSuccess(result, entity);
-                int versionCode = entity.getVersionCode();
-                String downloadUrl = entity.getDownloadUrl();
-                String updateDesc = entity.getUpdateDesc();
-                boolean haveToUpdate = entity.isHaveToUpdate();//是否必须更新
-
-                int appVersionCode = AppUtils.getAppVersionCode();
-                if (versionCode > appVersionCode && downloadUrl != null) {//需要进行版本更新
-                    //弹窗提示进行版本更新
-                    versionUpdateManager = new VersionUpdateManager(activity);
-                    versionUpdateManager.makeVersionUpdate(versionCode, downloadUrl, updateDesc, haveToUpdate, new VersionUpdateManager.VersionUpdateCallback() {
-                        @Override
-                        public void onNextStep() {//下一步
-                            judgeIsSkipGuidePage(); //判断是否跳转引导页
-                        }
-                    });
-
-
-                    return;
-                }
-                //不需要版本更新
-                judgeIsSkipGuidePage(); //判断是否跳转引导页
+                checkVersion(entity);//校验版本
 
             }
         });
 
 
+    }
+
+    /**
+     * 校验版本
+     */
+    private void checkVersion(TestVersionUpdateEntity entity) {
+        int versionCode = entity.getVersionCode();
+        String downloadUrl = entity.getDownloadUrl();
+        String updateDesc = entity.getUpdateDesc();
+        boolean haveToUpdate = entity.isHaveToUpdate();//是否必须更新
+
+        int appVersionCode = AppUtils.getAppVersionCode();
+        if (versionCode > appVersionCode && downloadUrl != null) {//需要进行版本更新
+            //弹窗提示进行版本更新
+            versionUpdateManager = new VersionUpdateManager(activity);
+            versionUpdateManager.makeVersionUpdate(versionCode, downloadUrl, updateDesc, haveToUpdate, new VersionUpdateManager.VersionUpdateCallback() {
+                @Override
+                public void onNextStep() {//下一步
+                    judgeIsSkipGuidePage(); //判断是否跳转引导页
+                }
+            });
+
+
+            return;
+        }
+        //不需要版本更新
+        judgeIsSkipGuidePage(); //判断是否跳转引导页
     }
 
 
