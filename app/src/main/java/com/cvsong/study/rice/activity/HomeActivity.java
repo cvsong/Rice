@@ -17,7 +17,8 @@ public class HomeActivity extends AppBaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState, View view) {
-
+            titleView.setTitleText("首页面");
+            titleView.setLeftSubTitleVisibility(View.GONE);
     }
 
     @Override

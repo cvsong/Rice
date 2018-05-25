@@ -2,8 +2,10 @@ package com.cvsong.study.library.util.utilcode.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.StatFs;
 import android.os.storage.StorageManager;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -115,4 +117,42 @@ public final class SDCardUtils {
         }
         return paths;
     }
+
+    /**
+     * 判断Sdcard是否存在
+     *
+     * @return
+     */
+    public static boolean detectSdcardIsExist() {
+        String extStorageState = Environment.getExternalStorageState();
+        File file = Environment.getExternalStorageDirectory();
+        if (!Environment.MEDIA_MOUNTED.equals(extStorageState)
+                || !file.exists() || !file.canWrite()
+                || file.getFreeSpace() <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断存储空间大小是否满足条件
+     *
+     * @param sizeByte
+     * @return
+     */
+    public static boolean isSatisfySpace(float sizeByte) {
+        boolean satisfySpace = false;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            String sdcard = Environment.getExternalStorageDirectory().getPath();
+            StatFs statFs = new StatFs(sdcard);
+            long blockSize = statFs.getBlockSize();//每个block 占字节数
+            long blocks = statFs.getAvailableBlocks();
+            float availableSpare = blocks * blockSize;
+            if (availableSpare > (sizeByte + 1024 * 1024)) {
+                satisfySpace = true;
+            }
+        }
+        return satisfySpace;
+    }
+
 }

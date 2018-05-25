@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.cvsong.study.rice">
 
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--获取网络状态权限-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!--相机权限-->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <!-- 读写sd卡 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -24,10 +29,13 @@
         android:name=".app.AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="${APP_NAME}"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+      >
+
+        <!--Activity-->
 
         <!-- 启动页面 -->
         <activity
@@ -41,12 +49,18 @@
         </activity>
 
         <!-- 引导页 -->
-        <activity android:name=".activity.start.StartGuideActivity"
-                  android:theme="@style/FullscreenStyle">
+        <activity
+            android:name=".activity.start.StartGuideActivity"
+            android:theme="@style/FullscreenStyle">
         </activity>
         <!--主页面-->
         <activity android:name=".activity.HomeActivity">
         </activity>
+
+
+
+
+
     </application>
 
 </manifest>

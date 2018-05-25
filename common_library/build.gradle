@@ -9,8 +9,8 @@ android {
         targetSdkVersion target_sdk_version
         versionCode version_code
         versionName version_name
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [APP_ID_VALUE: app_id]
 
         /*ndk{}多平台编译,生成有so库的时候使用*/
         ndk {
@@ -25,7 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '26.0.2'
+
 }
 
 dependencies {

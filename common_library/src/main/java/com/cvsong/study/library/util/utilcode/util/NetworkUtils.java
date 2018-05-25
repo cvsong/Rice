@@ -57,7 +57,7 @@ public final class NetworkUtils {
     }
 
     /**
-     * Return whether network is connected.
+     * 判断网络是否连接-->必须添加获取网络状态的权限
      * <p>Must hold
      * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
@@ -330,6 +330,9 @@ public final class NetworkUtils {
         return netType;
     }
 
+    /**
+     * 获取网络信息
+     */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager manager =

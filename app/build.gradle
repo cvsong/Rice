@@ -46,7 +46,7 @@ android {
     /*defaultConfig{}是默认的配置,它是一个ProductFlavor.ProductFlavor允许根据不同的情况同时生成不同的apk包*/
     defaultConfig {
         /*applicationId-应用包名*/
-        applicationId "com.cvsong.study.rice"
+        applicationId app_id
         /*minSdkVersion-支持的最低Android系统版本*/
         minSdkVersion min_sdk_version
         /*targetSdkVersion-基于开发的Android系统版本*/
@@ -126,6 +126,7 @@ android {
             }
             //自定义属性
             resValue("string", "DEBUG", "false")
+
         }
 
         debug {
@@ -141,32 +142,34 @@ android {
         }
     }
 
-    /*Gradle3.0.0及以上,必须要给flavor定义一个维度*/
+   /* *//*Gradle3.0.0及以上,必须要给flavor定义一个维度*//*
     flavorDimensions "test"
-    /*productFlavors{}Gradle多渠道打包*/
+    *//*productFlavors{}Gradle多渠道打包*//*
     productFlavors {
         riceA {
             //维度名称
             dimension "test"
-            //应用包名
-            applicationId "com.cvsong.study.rice.testA"
             //应用版本名称
             versionName "rice-testA-v$version_name"
-            //占位符,可以通过它动态配置AndroidManifest文件一些内容
-            manifestPlaceholders = [APP_NAME: "RiceA测试版"]
             //为BuildConfig文件生成自定义变量名
             buildConfigField "String", "BASE_URL", "\"testA_URL\""
+            //占位符,可以通过它动态配置AndroidManifest文件一些内容
+            manifestPlaceholders = [
+                    APP_NAME    : "RiceA测试版"
+            ]
         }
 
 
         riceB {
             dimension "test"
-            applicationId "com.cvsong.study.rice.testB"
             versionName "rice-testB-v$version_name"
-            manifestPlaceholders = [APP_NAME: "RiceB测试版"]
             buildConfigField "String", "BASE_URL", "\"testB_URL\""
+            //占位符,可以通过它动态配置AndroidManifest文件一些内容
+            manifestPlaceholders = [
+                    APP_NAME    : "RiceB测试版"
+            ]
         }
-    }
+    }*/
 
 
 }

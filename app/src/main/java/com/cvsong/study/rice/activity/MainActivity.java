@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.cvsong.study.library.net.download.VersionUpdateManager;
+import com.cvsong.study.library.net.entity.HttpCallBack;
+import com.cvsong.study.library.net.entity.Result;
 import com.cvsong.study.library.util.app_tools.AppSpUtils;
 import com.cvsong.study.library.util.permission.AppPermissionEntity;
 import com.cvsong.study.library.util.permission.AppPermissionsManager;
@@ -14,9 +17,12 @@ import com.cvsong.study.library.util.permission.AppSettingsHolderActivity;
 import com.cvsong.study.library.util.permission.IPermissionCallbacks;
 import com.cvsong.study.library.util.permission.PermissionRequestCallback;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
+import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.activity.start.StartGuideActivity;
 import com.cvsong.study.rice.base.AppBaseActivity;
+import com.cvsong.study.rice.entity.TestVersionUpdateEntity;
+import com.cvsong.study.rice.manager.http.AppHttpManage;
 
 import java.util.List;
 
@@ -37,39 +43,11 @@ public class MainActivity extends AppBaseActivity {
         @Override
         public void onAllPermissionsGranted(int requestCode, @NonNull List<AppPermissionEntity> appPermissions) {
             super.onAllPermissionsGranted(requestCode, appPermissions);
-            judgeIsSkipGuidePage(); //判断是否跳转引导页
+            judgeIsNeedUpdate();//判断是否需要更新应用
+
         }
-
-
-        //        @Override
-//        public void onSomePermissionsNotGranted(Context context, int requestCode, @NonNull List<AppPermissionEntity> grantedPermissions, @NonNull List<AppPermissionEntity> deniedPermissions) {
-//            StringBuilder sb = new StringBuilder();
-//            for (AppPermissionEntity entity : deniedPermissions) {
-//                sb.append(entity.getPermissionName() + " ");
-//            }
-//            String permissionNames = sb.toString().trim();
-//            CustomDialogManager.newBuilder(MainActivity.this)
-//                    .titleText("温馨提示")
-//                    .contentText(String.format("本应用的使用必须拥有%s的权限,请到应用设置开通.", permissionNames))
-//                    .negativeButtonText("取消")
-//                    .negativeListener(new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                            ActivityUtils.finishActivity(MainActivity.class);
-//                        }
-//                    })
-//                    .positiveButtonText("设置")
-//                    .positiveListener(new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                            AppSettingsHolderActivity.start(MainActivity.this, RC_APP_SETTING);
-//                        }
-//                    })
-//                    .build().show();
-//        }
     };
+    private VersionUpdateManager versionUpdateManager;
 
 
     @Override
@@ -89,11 +67,48 @@ public class MainActivity extends AppBaseActivity {
     public void loadData() {
         //App6.0权限申请
         requestAppNeedPermissions();
-
-        //TODO 更新判断
-
     }
 
+    /**
+     * 判断是否需要更新应用
+     */
+    private void judgeIsNeedUpdate() {
+
+        //先网络请求获取版本更新信息
+        //判断是否需要更新
+        //如果需要更新则进行下载,不需要的话进行后面流程-->页面跳转
+
+        AppHttpManage.checkVersionUpdate(this, new HttpCallBack<TestVersionUpdateEntity>() {
+            @Override
+            public void onSuccess(Result result, TestVersionUpdateEntity entity) {
+                super.onSuccess(result, entity);
+                int versionCode = entity.getVersionCode();
+                String downloadUrl = entity.getDownloadUrl();
+                String updateDesc = entity.getUpdateDesc();
+                boolean haveToUpdate = entity.isHaveToUpdate();//是否必须更新
+
+                int appVersionCode = AppUtils.getAppVersionCode();
+                if (versionCode > appVersionCode && downloadUrl != null) {//需要进行版本更新
+                    //弹窗提示进行版本更新
+                    versionUpdateManager = new VersionUpdateManager(activity);
+                    versionUpdateManager.makeVersionUpdate(versionCode, downloadUrl, updateDesc, haveToUpdate, new VersionUpdateManager.VersionUpdateCallback() {
+                        @Override
+                        public void onNextStep() {//下一步
+                            judgeIsSkipGuidePage(); //判断是否跳转引导页
+                        }
+                    });
+
+
+                    return;
+                }
+                //不需要版本更新
+                judgeIsSkipGuidePage(); //判断是否跳转引导页
+
+            }
+        });
+
+
+    }
 
 
     /**
@@ -141,10 +156,17 @@ public class MainActivity extends AppBaseActivity {
         super.onWidgetClick(view);
         switch (view.getId()) {
             case R.id.iv_img:
-
                 break;
         }
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (versionUpdateManager!=null) {
+            versionUpdateManager.close();//注销
+        }
+
+    }
 }

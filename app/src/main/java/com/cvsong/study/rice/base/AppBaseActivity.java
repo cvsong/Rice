@@ -1,5 +1,6 @@
 package com.cvsong.study.rice.base;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
     private LinearLayout llContent;
     private Unbinder unbinder;
     protected CustomTitleView titleView;
+    protected Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         initTitle();//初始化标题栏设置
         initStatusLayout();//初始化多状态布局
         unbinder = ButterKnife.bind(this);//绑定黄油刀
+        activity=this;
         initView(savedInstanceState,llContent);//View初始化
         loadData();//加载数据
 

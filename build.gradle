@@ -45,6 +45,7 @@ ext {
     //应用信息
     version_code = 1
     version_name = '1.0.0'
+    app_id = 'com.cvsong.study.rice'
 
     // App dependencies
     support_version = '27.1.0'
@@ -61,8 +62,7 @@ ext {
     gilde_version = '4.7.1'
 
     //刷新控件
-    smart_refresh_layout='1.1.0-alpha-5'
-
+    smart_refresh_layout = '1.1.0-alpha-5'
 
 
 }

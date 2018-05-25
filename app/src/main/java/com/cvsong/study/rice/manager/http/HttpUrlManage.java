@@ -1,6 +1,7 @@
-package com.cvsong.study.library.net.httpservice;
+package com.cvsong.study.rice.manager.http;
 
 
+import com.cvsong.study.library.net.httpservice.HttpConstants;
 import com.cvsong.study.library.net.interfaces.IHttpUrlManage;
 
 /**
@@ -8,7 +9,8 @@ import com.cvsong.study.library.net.interfaces.IHttpUrlManage;
  */
 public enum HttpUrlManage implements IHttpUrlManage {
     //公共部分
-    WMS_SYSTEM_LOGIN("登录", URLDomain.SYSTEM_LOGIN),//登录
+    RICE_SYSTEM_LOGIN("登录", URLDomain.SYSTEM_LOGIN),//登录
+    RICE_SYSTEM_VERSION_UPDATE("版本更新", URLDomain.RICE_SYSTEM_VERSION_UPDATE),//版本更新
 
 
 
@@ -70,6 +72,7 @@ public enum HttpUrlManage implements IHttpUrlManage {
     public enum URLDomain {
         //公共模块
         SYSTEM_LOGIN("http://%s%s/SysAdmin/rpc/login", InterfaceNeedCache.NO),//登录
+        RICE_SYSTEM_VERSION_UPDATE("http://%s%s/SysAdmin/rpc/login", InterfaceNeedCache.NO),//版本更新
 
 
 

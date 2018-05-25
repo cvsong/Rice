@@ -36,6 +36,8 @@ public interface ICustomTitleView {
     void setTitleTextVisibility(@CustomTitleView.Visibility int visibility);
 
 
+
+
     /******************针对左边副标题的设置******************/
 
     /**

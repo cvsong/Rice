@@ -38,6 +38,14 @@ public class AppSpUtils {
     public static final String IS_SAVA_USER_PSW = "is_sava_user_psw";
 
 
+    //应用下载Id
+    public static final String APK_DOWNLOAD_ID = "apk_download_id";
+
+
+
+
+
+
     /******************************SP常用方法***************************************/
     private static SimpleArrayMap<String, AppSpUtils> SP_UTILS_MAP = new SimpleArrayMap<>();
     private SharedPreferences sp;
