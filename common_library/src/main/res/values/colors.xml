@@ -40,4 +40,10 @@
     <color name="divider_e1e1e1">#e1e1e1</color>
 
 
+
+    <!--底部导航栏颜色配置-->
+    <color name="tab_unselect">#c9c9c9</color>
+    <color name="tab_selected">#34b2d1</color>
+
+
 </resources>

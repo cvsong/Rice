@@ -7,7 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.cvsong.study.library.wiget.CustomBottomNavigationView;
+import com.cvsong.study.library.wiget.bottomview.BottomBar;
+import com.cvsong.study.library.wiget.bottomview.BottomBarTab;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseActivity;
 import com.cvsong.study.rice.fragment.HaHaFragment;
@@ -16,7 +17,6 @@ import com.cvsong.study.rice.fragment.HiHiFragment;
 import com.cvsong.study.rice.fragment.XiXiFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 主页面
@@ -24,22 +24,22 @@ import butterknife.ButterKnife;
  */
 public class HomeActivity extends AppBaseActivity {
 
+    public static final int FIRST = 0;
+    public static final int SECOND = 1;
+    public static final int THIRD = 2;
+    public static final int FOURTH = 3;
 
+    @BindView(R.id.bottomBar)
+    BottomBar bottomBar;
     @BindView(R.id.fl_content)
     FrameLayout flContent;
-    @BindView(R.id.bottom_1)
-    CustomBottomNavigationView bottom1;
-    @BindView(R.id.bottom_2)
-    CustomBottomNavigationView bottom2;
-    @BindView(R.id.bottom_3)
-    CustomBottomNavigationView bottom3;
-    @BindView(R.id.bottom_4)
-    CustomBottomNavigationView bottom4;
-    private XiXiFragment xiXiFragment;
-    private HaHaFragment haHaFragment;
-    private HeHeFragment heHeFragment;
-    private HiHiFragment hiHiFragment;
     private Fragment currentFragment;
+
+    private Fragment[] fragments = new Fragment[4];
+    private String[] titles = new String[]{"哈哈", "呵呵", "嘿嘿", "嘻嘻"};
+    private int[] unselectIcons = new int[]{R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d};
+    private int[] selectedIcons = new int[]{R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l};
+
 
     @Override
     public int bindLayout() {
@@ -50,12 +50,8 @@ public class HomeActivity extends AppBaseActivity {
     public void initView(Bundle savedInstanceState, View view) {
         titleView.setLeftSubTitleVisibility(View.GONE);
 
-        bottom1.setOnClickListener(this);
-        bottom2.setOnClickListener(this);
-        bottom3.setOnClickListener(this);
-        bottom4.setOnClickListener(this);
-
         initFragment();//Fragment初始化
+        initBottomView();//初始化底部导航栏
 
     }
 
@@ -63,23 +59,67 @@ public class HomeActivity extends AppBaseActivity {
      * Fragment初始化
      */
     private void initFragment() {
-        haHaFragment = new HaHaFragment();
-        heHeFragment = new HeHeFragment();
-        hiHiFragment = new HiHiFragment();
-        xiXiFragment = new XiXiFragment();
+        fragments[FIRST] = HaHaFragment.newInstance();
+        fragments[SECOND] = HeHeFragment.newInstance();
+        fragments[THIRD] = HiHiFragment.newInstance();
+        fragments[FOURTH] = XiXiFragment.newInstance();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fl_content, haHaFragment)
-                .add(R.id.fl_content, heHeFragment)
-                .add(R.id.fl_content, hiHiFragment)
-                .add(R.id.fl_content, xiXiFragment)
-                .hide(haHaFragment).hide(heHeFragment)
-                .hide(hiHiFragment)
-                .hide(xiXiFragment)
-                .show(haHaFragment).commit();
+        for (Fragment fragment : fragments) {
+            transaction.add(R.id.fl_content, fragment);
+            transaction.hide(fragment);
+        }
+        transaction.show(fragments[FIRST]);
+        transaction.commitAllowingStateLoss();
+        currentFragment = fragments[FIRST];
+        titleView.setTitleText(titles[FIRST]);
 
-        currentFragment = xiXiFragment;
-        switchFragment(R.id.bottom_1);//切换到首页Fragement
+    }
+
+
+    /**
+     * 初始化底部导航栏
+     */
+    private void initBottomView() {
+        BottomBarTab firstTab = new BottomBarTab(this, unselectIcons[FIRST], selectedIcons[FIRST], titles[FIRST]);
+        BottomBarTab secondTab = new BottomBarTab(this, unselectIcons[SECOND], selectedIcons[SECOND], titles[SECOND]);
+        BottomBarTab thirdTab = new BottomBarTab(this, unselectIcons[THIRD], selectedIcons[THIRD], titles[THIRD]);
+        BottomBarTab fourthTab = new BottomBarTab(this, unselectIcons[FOURTH], selectedIcons[FOURTH], titles[FOURTH]);
+        bottomBar.addItem(firstTab)
+                .addItem(secondTab)
+                .addItem(thirdTab)
+                .addItem(fourthTab);
+
+        bottomBar.setOnTabSelectedListener(new BottomBar.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, int prePosition) {
+                if (position == prePosition) {
+                    return;
+                }
+                switchFragment(position);//切换Fragment
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+            }
+        });
+    }
+
+
+    /**
+     * Fragment切换
+     */
+    private void switchFragment(int position) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = fragments[position];
+        transaction.hide(currentFragment).show(fragment).commitAllowingStateLoss();
+        titleView.setTitleText(titles[position]);
+        currentFragment = fragment;
     }
 
     @Override
@@ -88,67 +128,6 @@ public class HomeActivity extends AppBaseActivity {
 
     }
 
-
-    @Override
-    protected void onWidgetClick(View view) {
-        super.onWidgetClick(view);
-        switchFragment(view.getId());
-    }
-
-    /**
-     * Fragment切换
-     *
-     * @param childId
-     */
-    private void switchFragment(int childId) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        switch (childId) {
-            case R.id.bottom_1:
-                if (currentFragment instanceof HaHaFragment) {
-                    return;
-                }
-                bottom1.setSelected(true);
-                titleView.setTitleText("哈哈");
-                transaction.hide(currentFragment).show(haHaFragment);
-                currentFragment = haHaFragment;
-                break;
-            case R.id.bottom_2:
-                if (currentFragment instanceof HeHeFragment) {
-                    return;
-                }
-                titleView.setTitleText("呵呵");
-                transaction.hide(currentFragment).show(heHeFragment);
-                currentFragment = heHeFragment;
-                break;
-
-            case R.id.bottom_3:
-                if (currentFragment instanceof HiHiFragment) {
-                    return;
-                }
-                titleView.setTitleText("嘿嘿");
-                transaction.hide(currentFragment).show(hiHiFragment);
-                currentFragment = hiHiFragment;
-                break;
-
-
-            case R.id.bottom_4:
-                if (currentFragment instanceof XiXiFragment) {
-                    return;
-                }
-                titleView.setTitleText("嘻嘻");
-                transaction.hide(currentFragment).show(xiXiFragment);
-                currentFragment = xiXiFragment;
-                break;
-
-        }
-
-        transaction.commit();
-
-        bottom1.setSelected(currentFragment instanceof HaHaFragment ? true : false);
-        bottom2.setSelected(currentFragment instanceof HeHeFragment ? true : false);
-        bottom3.setSelected(currentFragment instanceof HiHiFragment ? true : false);
-        bottom4.setSelected(currentFragment instanceof XiXiFragment ? true : false);
-    }
 
 
     @Override
