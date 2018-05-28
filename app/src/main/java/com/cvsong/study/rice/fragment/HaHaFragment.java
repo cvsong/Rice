@@ -1,10 +1,19 @@
 package com.cvsong.study.rice.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.rice.R;
+import com.cvsong.study.rice.activity.haha.WebViewDemoActivity;
 import com.cvsong.study.rice.base.AppBaseFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -13,6 +22,10 @@ import com.cvsong.study.rice.base.AppBaseFragment;
  */
 
 public class HaHaFragment extends AppBaseFragment {
+
+    @BindView(R.id.btn_open_baidu)
+    Button btnOpenBaidu;
+
 
     public static HaHaFragment newInstance() {
         HaHaFragment fragment = new HaHaFragment();
@@ -30,11 +43,22 @@ public class HaHaFragment extends AppBaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState, View view) {
-
+        btnOpenBaidu.setOnClickListener(this);
     }
 
     @Override
     public void loadData() {
 
+    }
+
+    @Override
+    protected void onWidgetClick(View view) {
+        super.onWidgetClick(view);
+        switch (view.getId()) {
+            case R.id.btn_open_baidu:
+                ActivityUtils.startActivity(WebViewDemoActivity.class);
+
+                break;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.cvsong.study.rice.activity;
+package com.cvsong.study.rice.activity.start;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import com.cvsong.study.library.util.permission.PermissionRequestCallback;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.rice.R;
-import com.cvsong.study.rice.activity.start.StartGuideActivity;
+import com.cvsong.study.rice.activity.HomeActivity;
 import com.cvsong.study.rice.base.AppBaseActivity;
 import com.cvsong.study.rice.entity.TestVersionUpdateEntity;
 import com.cvsong.study.rice.manager.http.AppHttpManage;

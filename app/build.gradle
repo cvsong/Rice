@@ -142,7 +142,7 @@ android {
         }
     }
 
-   /* *//*Gradle3.0.0及以上,必须要给flavor定义一个维度*//*
+    /* *//*Gradle3.0.0及以上,必须要给flavor定义一个维度*//*
     flavorDimensions "test"
     *//*productFlavors{}Gradle多渠道打包*//*
     productFlavors {

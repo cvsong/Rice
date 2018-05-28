@@ -12,10 +12,9 @@
 
     <RelativeLayout
         android:id="@+id/rl_subtitle_left"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:maxWidth="80dp"
         android:orientation="horizontal">
 
 
@@ -58,7 +57,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_subtitle_right"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

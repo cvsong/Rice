@@ -13,6 +13,12 @@
         android:text="哈哈"
         android:textSize="@dimen/fontSize_18"/>
 
+    <Button
+        android:id="@+id/btn_open_baidu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="打开百度"/>
 
 
 </LinearLayout>
