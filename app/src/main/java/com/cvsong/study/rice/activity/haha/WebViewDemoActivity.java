@@ -9,11 +9,6 @@ import com.cvsong.study.rice.base.AppBaseWebViewActivity;
 
 public class WebViewDemoActivity extends AppBaseWebViewActivity {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_web_view_demo);
-//    }
 
     @Override
     public int bindLayout() {

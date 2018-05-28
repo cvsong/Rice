@@ -39,7 +39,6 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
 
     private long lastClick = 0;//上次点击时间
     protected String TAG;//Log标记
-    protected StatusLayoutManager statusLayoutManager;
     private LinearLayout llContent;
     private Unbinder unbinder;
     protected CustomTitleView titleView;
@@ -53,7 +52,6 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
         setThemStyle();//设置主题样式
         setContentView(R.layout.activity_app_base_web_view);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
-
         TAG = this.getClass().getSimpleName();
 
         llContent = findViewById(R.id.ll_content);
@@ -62,7 +60,6 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
         progressBar = findViewById(R.id.progress_bar);
 
         initTitle();//初始化标题栏设置
-//        initStatusLayout();//初始化多状态布局
         initWebView();//初始化WebView
         unbinder = ButterKnife.bind(this);//绑定黄油刀
         activity = this;
@@ -87,60 +84,15 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
         titleView.setTitleBackgroundColor(getResources().getColor(R.color.bg_blue_3fa9c4));
         titleView.setLeftSubtitleText("返回");
         titleView.setRightSubtitleText("关闭");
-       titleView.setRightSubTitleClickListener(new View.OnClickListener() {//右边关闭
-           @Override
-           public void onClick(View v) {
-               Class<? extends AppBaseWebViewActivity> clazz = AppBaseWebViewActivity.this.getClass();
-               ActivityUtils.finishActivity(clazz);
-           }
-       });
-        titleView.setLeftSubTitleClickListener(new View.OnClickListener() {//统一处理---->左边WebView回退
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        //右边关闭
+        titleView.setRightSubTitleClickListener(v -> {
+            Class<? extends AppBaseWebViewActivity> clazz = AppBaseWebViewActivity.this.getClass();
+            ActivityUtils.finishActivity(clazz);
         });
+        //统一处理---->左边WebView回退
+        titleView.setLeftSubTitleClickListener(v -> onBackPressed());
 
     }
-
-//    /**
-//     * 初始化多状态布局
-//     */
-//    private void initStatusLayout() {
-//
-//        statusLayoutManager = StatusLayoutManager.newBuilder(this)
-//                .contentView(bindLayout())//绑定布局文件
-//                .emptyDataView(R.layout.layout_status_emptydata)
-//                .errorView(R.layout.layout_status_error)
-//                .loadingView(R.layout.layout_status_loading)
-//                .netWorkErrorView(R.layout.layout_status_networkerror)
-//                .retryViewId(R.id.button_retry)
-//                .onShowHideViewListener(new OnShowHideViewListener() {
-//                    @Override
-//                    public void onShowView(View view, int id) {
-//                    }
-//
-//                    @Override
-//                    public void onHideView(View view, int id) {
-//                    }
-//                }).onRetryListener(new OnRetryListener() {
-//                    @Override
-//                    public void onRetry() {
-//                        loadData();//加载数据
-//                    }
-//                }).build();
-//
-//
-//        //将多状态布局添加到内容布局中
-//        View rootLayout = statusLayoutManager.getRootLayout();
-//        if (llContent != null) {
-//            llContent.addView(rootLayout);
-//        }
-//        statusLayoutManager.showContent();
-//
-//
-//    }
-
 
     /**
      * 初始化WebView
@@ -232,11 +184,9 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
 //        }
 
         //移除操作系统开放接口防止被恶意操作
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            webView.removeJavascriptInterface("searchBoxJavaBridge_");
-            webView.removeJavascriptInterface("accessibility");
-            webView.removeJavascriptInterface("accessibilityTraversal");
-        }
+        webView.removeJavascriptInterface("searchBoxJavaBridge_");
+        webView.removeJavascriptInterface("accessibility");
+        webView.removeJavascriptInterface("accessibilityTraversal");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//API大于等于26
             //设置安全浏览模式
