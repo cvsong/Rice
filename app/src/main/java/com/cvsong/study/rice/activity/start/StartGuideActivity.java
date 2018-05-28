@@ -144,4 +144,9 @@ public class StartGuideActivity extends AppBaseActivity {
             return PageOptions.create(pageLayoutResId, position, tutorialItems);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        exitApp();
+    }
 }

@@ -40,6 +40,9 @@ public class HomeActivity extends AppBaseActivity {
     private int[] unselectIcons = new int[]{R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d, R.drawable.icon_tab_wd_d};
     private int[] selectedIcons = new int[]{R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l, R.drawable.icon_tab_wd_l};
 
+    // 再点一次退出程序时间设置
+    private static final long WAIT_TIME = 2000L;
+    private long TOUCH_TIME = 0;
 
     @Override
     public int bindLayout() {
@@ -136,5 +139,8 @@ public class HomeActivity extends AppBaseActivity {
 //        super.onSaveInstanceState(outState, outPersistentState);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        exitApp();
+    }
 }
