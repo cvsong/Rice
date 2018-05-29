@@ -52,4 +52,8 @@ dependencies {
     /*RxJava*/
     compile "io.reactivex.rxjava2:rxjava:2.1.8"
 
+    /*Zxing二维码扫描*/
+    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+    compile 'com.google.zxing:core:3.3.1'
+
 }

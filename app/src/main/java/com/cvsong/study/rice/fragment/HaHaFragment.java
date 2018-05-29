@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.rice.R;
+import com.cvsong.study.rice.activity.haha.CustomScanActivity;
 import com.cvsong.study.rice.activity.haha.WebViewDemoActivity;
 import com.cvsong.study.rice.base.AppBaseFragment;
 
@@ -25,6 +26,9 @@ public class HaHaFragment extends AppBaseFragment {
 
     @BindView(R.id.btn_open_baidu)
     Button btnOpenBaidu;
+    @BindView(R.id.btn_open_camera)
+    Button btnOpenCamera;
+    Unbinder unbinder;
 
 
     public static HaHaFragment newInstance() {
@@ -44,6 +48,7 @@ public class HaHaFragment extends AppBaseFragment {
     @Override
     public void initView(Bundle savedInstanceState, View view) {
         btnOpenBaidu.setOnClickListener(this);
+        btnOpenCamera.setOnClickListener(this);
     }
 
     @Override
@@ -55,10 +60,18 @@ public class HaHaFragment extends AppBaseFragment {
     protected void onWidgetClick(View view) {
         super.onWidgetClick(view);
         switch (view.getId()) {
-            case R.id.btn_open_baidu:
+            case R.id.btn_open_baidu://打开百度
                 ActivityUtils.startActivity(WebViewDemoActivity.class);
 
                 break;
+            case R.id.btn_open_camera://打开相机
+                ActivityUtils.startActivity(CustomScanActivity.class);
+
+                break;
+
+
         }
     }
+
+
 }

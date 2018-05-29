@@ -13,6 +13,9 @@
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
+    <!-- 设置手机震动权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- 读写sd卡 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -56,6 +59,8 @@
         <activity android:name=".activity.HomeActivity">
         </activity>
         <activity android:name=".activity.haha.WebViewDemoActivity">
+        </activity>
+        <activity android:name=".activity.haha.CustomScanActivity">
         </activity>
     </application>
 

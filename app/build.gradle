@@ -186,7 +186,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     /*implementation和compile区别在于implementation指令依赖是不会传递的，即当前引用的第三方库仅限于本module内使用*/
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0'
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
