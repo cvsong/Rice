@@ -28,7 +28,8 @@ public class HaHaFragment extends AppBaseFragment {
     Button btnOpenBaidu;
     @BindView(R.id.btn_open_camera)
     Button btnOpenCamera;
-    Unbinder unbinder;
+    @BindView(R.id.btn_qr_scan)
+    Button btnQrScan;
 
 
     public static HaHaFragment newInstance() {
@@ -49,6 +50,7 @@ public class HaHaFragment extends AppBaseFragment {
     public void initView(Bundle savedInstanceState, View view) {
         btnOpenBaidu.setOnClickListener(this);
         btnOpenCamera.setOnClickListener(this);
+        btnQrScan.setOnClickListener(this);
     }
 
     @Override
@@ -64,7 +66,12 @@ public class HaHaFragment extends AppBaseFragment {
                 ActivityUtils.startActivity(WebViewDemoActivity.class);
 
                 break;
-            case R.id.btn_open_camera://打开相机
+            case R.id.btn_open_camera://打开图片选择
+                ActivityUtils.startActivity(CustomScanActivity.class);
+
+                break;
+
+            case R.id.btn_qr_scan://二维码扫描
                 ActivityUtils.startActivity(CustomScanActivity.class);
 
                 break;
