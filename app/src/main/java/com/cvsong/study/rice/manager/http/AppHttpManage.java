@@ -67,4 +67,26 @@ public class AppHttpManage {
         });
     }
 
+
+
+    /**
+     * 获取白银信息
+     */
+    public static void getSilverInfo(Activity activity, String userName, String psw, final HttpCallBack<Object> callBack) {
+        HttpRequestUtil.getInstance().postAsynRequest(activity, HttpUrlManage.RICE_SYSTEM_LOGIN, null, Object.class, new HttpCallBack<Object>() {
+            @Override
+            public void onSuccess(Result result, Object entity) {
+                super.onSuccess(result, entity);
+                callBack.onSuccess(result, entity);
+            }
+
+            @Override
+            public void onFailure(Request request, Exception exception) {
+                super.onFailure(request, exception);
+                callBack.onFailure(request, exception);
+            }
+        });
+    }
+
+
 }

@@ -19,6 +19,10 @@ public class AppConstants {
 
 
 
+
+
+
+
     /*********************************数据传递常量******************************/
     /*传递Int数据*/
     public static final String DATA_INT = "data_int";

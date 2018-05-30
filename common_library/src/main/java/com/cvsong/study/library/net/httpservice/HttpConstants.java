@@ -1,5 +1,8 @@
 package com.cvsong.study.library.net.httpservice;
 
+import com.cvsong.study.library.ndk.JniUtil;
+import com.cvsong.study.library.util.utilcode.util.Utils;
+
 /**
  * Http常量管理类
  * Created by chenweisong on 2017/10/10.
@@ -13,6 +16,10 @@ public class HttpConstants {
     public static boolean RSA_SWITCH = true;
     public static final String BASE_URL = "176.28";
     public static final String URL_PORT = ":8080";
+
+    //RSA加解密key
+    public static final String RSA_KEY = new JniUtil().getRsaKey(Utils.getApp());
+
 
 
 

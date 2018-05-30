@@ -39,6 +39,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.graphics.Typeface.NORMAL;
+
 
 /**
  * OkHttp网络请求管理类
@@ -102,7 +104,7 @@ public class OkHttpRequestManage implements IHttpRequest {
             @Override
             public void run() {
                 try {
-                    Request request = buildPostRequest(httpUrlManage, object, httpUrlManage.getCreditJSON(), callBack);
+                    Request request = buildPostRequest(httpUrlManage, object, callBack);
                     final Response response = okHttpClient.newCall(request).execute();
                     if (activity == null || activity.isFinishing()) {
                         return;
@@ -133,7 +135,7 @@ public class OkHttpRequestManage implements IHttpRequest {
         //请求前校验
         if (checkBeforeRequest(activity, httpUrlManage, callBack)) return;
         //构建Post请求体
-        final Request request = buildPostRequest(httpUrlManage, object, httpUrlManage.getCreditJSON(), callBack);
+        final Request request = buildPostRequest(httpUrlManage, object, callBack);
         if (request == null) {
             return;
         }
@@ -277,7 +279,7 @@ public class OkHttpRequestManage implements IHttpRequest {
      * 构建Post请求体
      */
 
-    private static Request buildPostRequest(final IHttpUrlManage httpUrlManage, Object object, boolean json, IHttpResponseCallBack callBack) {
+    private static Request buildPostRequest(final IHttpUrlManage httpUrlManage, Object object, IHttpResponseCallBack callBack) {
 
         String jsonStr = object == null ? "" : GsonUtil.GsonString(object);
         final String httpUrl = httpUrlManage.getUrl();
@@ -290,46 +292,42 @@ public class OkHttpRequestManage implements IHttpRequest {
         LogUtils.e(TAG, "网络请求Json串:" + jsonStr);
 
         //添加特殊处理 针对特定使用的JSON对象传递
-        RequestBody body = null;
-        if (json) {
-
-            try {
-                if (HttpConstants.RSA_SWITCH) {//加解密开关
-                    String rsaKey = new JniUtil().getRsaKey(Utils.getApp());
-                    byte[] reqStr = RSAUtil.encryptByPrivateKey(jsonStr.getBytes("utf-8"), rsaKey);
-                    String req = RSAUtil.encodeBase64ToString(reqStr);
-                    body = RequestBody.create(JSON, req);
-                } else {
-                    body = RequestBody.create(JSON, jsonStr);
-                }
-
-            } catch (Exception e) {
-                if (e instanceof IOException) {
-                    handleFailResponse(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_REQUEST, "IO异常"), callBack);
-                } else {
-                    handleFailResponse(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_REQUEST, "加密异常"), callBack);
-                }
-                return null;
+        RequestBody body;
+        try {
+            if (httpUrlManage.isNeedEncryptRequestData()) {//是否需要加密请求数据
+                byte[] reqStr = RSAUtil.encryptByPrivateKey(jsonStr.getBytes("utf-8"), HttpConstants.RSA_KEY);
+                String req = RSAUtil.encodeBase64ToString(reqStr);
+                body = RequestBody.create(JSON, req);
+            } else {
+                body = RequestBody.create(JSON, jsonStr);
             }
 
+            return new Request.Builder()
+                    .addHeader(ACCESSTOKEN, token)//请求头中添加token
+                    .url(httpUrlManage.getUrl())
+                    .post(body)
+                    .build();
 
-        } else {
-            Map<String, String> map = new HashMap();
-            map.put("jsonStr", jsonStr);
-            FormBody.Builder builder = new FormBody.Builder();
-            Set<Map.Entry<String, String>> entries = map.entrySet();
-            for (Map.Entry<String, String> entry : entries) {
-                builder.add(entry.getKey(), entry.getValue());
+        } catch (Exception e) {
+            if (e instanceof IOException) {
+                handleFailResponse(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_REQUEST, "IO异常"), callBack);
+            } else {
+                handleFailResponse(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_REQUEST, "加密异常"), callBack);
             }
-
-            body = builder.build();
+            return null;
         }
 
-        return new Request.Builder()
-                .addHeader(ACCESSTOKEN, token)//请求头中添加token
-                .url(httpUrlManage.getUrl())
-                .post(body)
-                .build();
+//            Map<String, String> map = new HashMap();
+//            map.put("jsonStr", jsonStr);
+//            FormBody.Builder builder = new FormBody.Builder();
+//            Set<Map.Entry<String, String>> entries = map.entrySet();
+//            for (Map.Entry<String, String> entry : entries) {
+//                builder.add(entry.getKey(), entry.getValue());
+//            }
+//
+//            body = builder.build();
+
+
     }
 
     /**
@@ -349,7 +347,7 @@ public class OkHttpRequestManage implements IHttpRequest {
 
 
         String token = response.headers().get(ACCESSTOKEN);
-        if (token != null) {//TODO 从响应头中获取token并保存
+        if (token != null) {//从响应头中获取token并保存
             AppSpUtils.getInstance().put(AppSpUtils.ACCESS_TOKEN, token);
         }
 
@@ -361,67 +359,91 @@ public class OkHttpRequestManage implements IHttpRequest {
                 return;
             }
             String result;
-            if (HttpConstants.RSA_SWITCH) {//加解密开关
+            if (httpUrlManage.isNeedDecryptResponseData()) {//是否需要解密响应数据
+
                 //对数据进行解密
-                String rsaKey = new JniUtil().getRsaKey(Utils.getApp());
-                result = RSAUtil.decryptByPrivateKey(resStr, rsaKey);//内部已做Base64转换
+                result = RSAUtil.decryptByPrivateKey(resStr, HttpConstants.RSA_KEY);//内部已做Base64转换
             } else {
                 result = resStr;
             }
-            LogUtils.e(TAG, "Url类型：" + httpUrlManage.getUrlType() + "，网络请求返回数据:" + result);
-            //解析最外层数据
-            final Result res = GsonUtil.GsonToBean(result, Result.class);
+            LogUtils.e(TAG, "Url类型：" + httpUrlManage.getUrlDesc() + "，网络请求返回数据:" + result);
 
-            final Object obj;
+            if (httpUrlManage.getResponseDataType() == IHttpUrlManage.HTTP_NORMAL) {
+                //处理正常的响应结果
+                handleNormalResponse(request, callBack, httpUrlManage, clazz, result);
 
-            //把Object对象转换成json字符串然后在根据对象进行重新转换
-            String retValueString = GsonUtil.GsonString(res.getData());
-            if (!TextUtils.isEmpty(retValueString) && !((clazz == String.class) || (clazz == Object.class))) {
-                obj = GsonUtil.GsonToBean(retValueString, clazz);
-            } else {
-                obj = retValueString;
-            }
-            if (res == null) {
-                handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "请求结果外层数据异常"), callBack);
-                return;
-            }
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
+            } else {//处理特殊的响应结果
 
-                    switch (res.getStatus()) {
-
-                        case HttpConstants.RESULT_STATUS_OK://请求成功
-
-                            switch (res.getCode()) {
-                                case HttpConstants.RESULT_CODE_TOKEN_INVALIDATION://token失效
-                                    callBack.onTokenInvalidation();
-                                    break;
-
-                                case HttpConstants.RESULT_CODE_OK:
-
-                                    if (httpUrlManage.isNeedCache()) {//是否需要缓存
-                                        //TODO 缓存处理
-                                        //  ACache.get(AppUtils.getContext()).put(httpUrlManage.getUrl(),result);
-                                    }
-                                    callBack.onSuccess(res, obj);
-                                    break;
-                                default:
-                                    callBack.onFailure(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()));
-                                    break;
-
-                            }
-                            break;
-
-                        default:
-                            handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()), callBack);
-                            break;
-                    }
+                final Object obj;
+                if (!TextUtils.isEmpty(result) && !((clazz == String.class) || (clazz == Object.class))) {
+                    obj = GsonUtil.GsonToBean(result, clazz);
+                } else {
+                    obj = result;
                 }
-            });
+                callBack.onSuccess(null, obj);
+
+            }
+
+
         } catch (Exception e) {
             handleFailResponse(request, e, callBack);
         }
+    }
+
+    /**
+     * 处理正常的响应结果
+     */
+    private void handleNormalResponse(final Request request, final IHttpResponseCallBack callBack, final IHttpUrlManage httpUrlManage, Class clazz, String result) {
+        //解析最外层数据
+        final Result res = GsonUtil.GsonToBean(result, Result.class);
+
+        final Object obj;
+
+        //把Object对象转换成json字符串然后在根据对象进行重新转换
+        String retValueString = GsonUtil.GsonString(res.getData());
+        if (!TextUtils.isEmpty(retValueString) && !((clazz == String.class) || (clazz == Object.class))) {
+            obj = GsonUtil.GsonToBean(retValueString, clazz);
+        } else {
+            obj = retValueString;
+        }
+//            if (res == null) {
+//                handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "请求结果外层数据异常"), callBack);
+//                return;
+//            }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                switch (res.getStatus()) {
+
+                    case HttpConstants.RESULT_STATUS_OK://请求成功
+
+                        switch (res.getCode()) {
+                            case HttpConstants.RESULT_CODE_TOKEN_INVALIDATION://token失效
+                                callBack.onTokenInvalidation();
+                                break;
+
+                            case HttpConstants.RESULT_CODE_OK:
+
+                                if (httpUrlManage.isNeedCache()) {//是否需要缓存
+                                    //TODO 缓存处理
+                                    //  ACache.get(AppUtils.getContext()).put(httpUrlManage.getUrl(),result);
+                                }
+                                callBack.onSuccess(res, obj);
+                                break;
+                            default:
+                                callBack.onFailure(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()));
+                                break;
+
+                        }
+                        break;
+
+                    default:
+                        handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()), callBack);
+                        break;
+                }
+            }
+        });
     }
 
 
