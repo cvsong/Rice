@@ -380,7 +380,12 @@ public class OkHttpRequestManage implements IHttpRequest {
                 } else {
                     obj = result;
                 }
-                callBack.onSuccess(null, obj);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.onSuccess(null, obj);
+                    }
+                });
 
             }
 

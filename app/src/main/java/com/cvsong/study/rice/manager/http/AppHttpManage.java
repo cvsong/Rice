@@ -5,8 +5,12 @@ import android.app.Activity;
 
 import com.cvsong.study.library.net.entity.HttpCallBack;
 import com.cvsong.study.library.net.entity.Result;
+import com.cvsong.study.library.net.exception.AppHttpException;
 import com.cvsong.study.library.net.httpservice.HttpRequestUtil;
+import com.cvsong.study.rice.entity.SilverInfoEntity;
 import com.cvsong.study.rice.entity.TestVersionUpdateEntity;
+
+import java.util.List;
 
 import okhttp3.Request;
 
@@ -72,12 +76,22 @@ public class AppHttpManage {
     /**
      * 获取白银信息
      */
-    public static void getSilverInfo(Activity activity, String userName, String psw, final HttpCallBack<Object> callBack) {
-        HttpRequestUtil.getInstance().postAsynRequest(activity, HttpUrlManage.RICE_SYSTEM_LOGIN, null, Object.class, new HttpCallBack<Object>() {
+    public static void getSilverInfo(Activity activity,final HttpCallBack<List<SilverInfoEntity.ResultEntity>> callBack) {
+        HttpRequestUtil.getInstance().getAsynRequest(activity, HttpUrlManage.RICE_SILVER_INFO, null, SilverInfoEntity.class, new HttpCallBack<SilverInfoEntity>() {
             @Override
-            public void onSuccess(Result result, Object entity) {
+            public void onSuccess(Result result, SilverInfoEntity entity) {
                 super.onSuccess(result, entity);
-                callBack.onSuccess(result, entity);
+                if (entity==null) {
+                    callBack.onFailure(null,new AppHttpException("数据为空"));
+                    return;
+                }
+                String retCode = entity.getRetCode();
+                if (!"200".equals(retCode)) {
+                    callBack.onFailure(null,new AppHttpException(entity.getMsg()));
+                    return;
+                }
+
+                callBack.onSuccess(result, entity.getResult());
             }
 
             @Override

@@ -6,11 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.cvsong.study.library.net.entity.HttpCallBack;
+import com.cvsong.study.library.net.entity.Result;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
+import com.cvsong.study.library.util.utilcode.util.LogUtils;
+import com.cvsong.study.library.util.utilcode.util.ToastUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.activity.haha.CustomScanActivity;
 import com.cvsong.study.rice.activity.haha.WebViewDemoActivity;
 import com.cvsong.study.rice.base.AppBaseFragment;
+import com.cvsong.study.rice.entity.SilverInfoEntity;
+import com.cvsong.study.rice.manager.http.AppHttpManage;
+import com.mob.mobapi.API;
+import com.mob.mobapi.APICallback;
+import com.mob.mobapi.MobAPI;
+import com.mob.mobapi.apis.Sliver;
+import com.mob.tools.utils.ResHelper;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,8 +80,8 @@ public class HaHaFragment extends AppBaseFragment {
 
                 break;
             case R.id.btn_open_camera://打开图片选择
-                ActivityUtils.startActivity(CustomScanActivity.class);
-
+//                ActivityUtils.startActivity(CustomScanActivity.class);
+                getSilverInfo();//获取白银信息
                 break;
 
             case R.id.btn_qr_scan://二维码扫描
@@ -78,6 +91,12 @@ public class HaHaFragment extends AppBaseFragment {
 
 
         }
+    }
+
+    private void getSilverInfo() {
+
+
+
     }
 
 

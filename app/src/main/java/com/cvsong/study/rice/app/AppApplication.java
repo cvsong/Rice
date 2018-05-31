@@ -8,6 +8,8 @@ import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.CrashUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.library.util.utilcode.util.Utils;
+import com.mob.MobSDK;
+import com.mob.mobapi.MobAPI;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -29,6 +31,8 @@ public class AppApplication extends BaseApplication {
         initLeakCanary();//初始化内存泄露检查工具
         initLog();//初始化Log日志打印设置
         initCrash();//初始化Crash捕捉
+
+        MobSDK.init(this,"261bd5a5afe3a");//初始化MobSDK
 
     }
 

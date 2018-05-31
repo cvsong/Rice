@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">Rice</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="gold_api_title_future">期货黄金</string>
+    <string name="gold_api_title_spot">现货黄金</string>
+    <string name="gold_api_title_buy_number">买量:</string>
+    <string name="gold_api_title_buy_pic">买入价:</string>
+    <string name="gold_api_title_close_pri">最新价:</string>
+    <string name="gold_api_title_code">代码:</string>
+    <string name="gold_api_title_date">日期:</string>
+    <string name="gold_api_title_dynamic_settle">动态结算:</string>
+    <string name="gold_api_title_high_pic">最高价:</string>
+    <string name="gold_api_title_limit">涨跌幅:</string>
+    <string name="gold_api_title_low_pic">最低价:</string>
+    <string name="gold_api_title_name">名称:</string>
+    <string name="gold_api_title_open_pri">开盘价:</string>
+    <string name="gold_api_title_position_num">持仓量:</string>
+    <string name="gold_api_title_sell_number">卖量:</string>
+    <string name="gold_api_title_sell_pic">卖出价:</string>
+    <string name="gold_api_title_total_vol">成交量:</string>
+    <string name="gold_api_title_yesterday_pic">昨收价:</string>
+    <string name="gold_api_title_yesterday_settle">昨日结算:</string>
+    <string name="gold_api_title_time">时间:</string>
+    <string name="gold_api_title_total_turnover">总成交额:</string>
+    <string name="gold_api_title_variety">品种:</string>
+
 </resources>

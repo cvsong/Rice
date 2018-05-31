@@ -15,7 +15,13 @@ import java.lang.annotation.RetentionPolicy;
 public enum HttpUrlManage implements IHttpUrlManage {
     //公共部分
     RICE_SYSTEM_LOGIN(1, "登录", URLParameter.SYSTEM_LOGIN),//登录
-    RICE_SYSTEM_VERSION_UPDATE(2, "版本更新", URLParameter.RICE_SYSTEM_VERSION_UPDATE) {},//版本更新
+    RICE_SYSTEM_VERSION_UPDATE(2, "版本更新", URLParameter.RICE_SYSTEM_VERSION_UPDATE),//版本更新
+
+
+
+    //自定义API
+    //白银数据
+    RICE_SILVER_INFO(3, "海交易所现货白银数据查询接口", URLParameter.RICE_SILVER_INFO),
 
 
     ;
@@ -28,6 +34,11 @@ public enum HttpUrlManage implements IHttpUrlManage {
         //公共部分
         SYSTEM_LOGIN("http://%s%s/SysAdmin/rpc/login", NO, HTTP_NORMAL, HTTP_NORMAL, NO, NO),//登录
         RICE_SYSTEM_VERSION_UPDATE("http://%s%s/SysAdmin/rpc/login", NO, HTTP_NORMAL, HTTP_NORMAL, NO, NO),//版本更新
+
+
+
+        //自定义API
+        RICE_SILVER_INFO("http://apicloud.mob.com/gold/silver/spot/query?key=261bd5a5afe3a", NO, HTTP_SPECIAL, HTTP_SPECIAL, NO, NO),//海交易所现货白银数据查询接口
 
 
         ;

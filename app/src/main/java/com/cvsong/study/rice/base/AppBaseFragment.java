@@ -1,8 +1,10 @@
 package com.cvsong.study.rice.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +29,14 @@ public abstract class AppBaseFragment extends Fragment
     private Unbinder unbinder;
     private FrameLayout viewContent;
     private long lastClick = 0;
+    protected Activity activity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_app_base, container, false);
         viewContent = (FrameLayout) view.findViewById(R.id.view_content);
-
+        activity = getActivity();
         initStatusLayout();
         unbinder = ButterKnife.bind(this, view);//绑定黄油刀
 
