@@ -1,8 +1,8 @@
 package com.cvsong.study.rice.activity.hehe;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.cvsong.study.library.net.entity.HttpCallBack;
@@ -11,11 +11,11 @@ import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseActivity;
 import com.cvsong.study.rice.entity.SilverInfoEntity;
 import com.cvsong.study.rice.manager.http.AppHttpManage;
-import com.mob.tools.utils.ResHelper;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +49,8 @@ public class SilverInfoActivity extends AppBaseActivity {
     TextView tvVariety;
     @BindView(R.id.tvYesterdayPic)
     TextView tvYesterdayPic;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     @Override
     public int bindLayout() {
@@ -58,6 +60,13 @@ public class SilverInfoActivity extends AppBaseActivity {
     @Override
     public void initView(Bundle savedInstanceState, View view) {
         titleView.setTitleText("白银现货");
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                loadData();
+            }
+        });
+        refreshLayout.setEnableLoadMore(false);
     }
 
     @Override
@@ -66,6 +75,7 @@ public class SilverInfoActivity extends AppBaseActivity {
             @Override
             public void onSuccess(Result result, List<SilverInfoEntity.ResultEntity> entity) {
                 super.onSuccess(result, entity);
+                refreshLayout.finishRefresh();
                 bindData(entity);
             }
         });
@@ -93,4 +103,10 @@ public class SilverInfoActivity extends AppBaseActivity {
 
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
