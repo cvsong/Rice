@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.cvsong.study.library.base.BaseFragment;
 import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
 import com.cvsong.study.library.wiget.statuslayout.StatusLayoutManager;
@@ -21,7 +22,7 @@ import butterknife.Unbinder;
 /**
  * 应用级BaseFragment
  */
-public abstract class AppBaseFragment extends Fragment
+public abstract class AppBaseFragment extends BaseFragment
         implements IBaseView {
 
 
@@ -29,14 +30,12 @@ public abstract class AppBaseFragment extends Fragment
     private Unbinder unbinder;
     private FrameLayout viewContent;
     private long lastClick = 0;
-    protected Activity activity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_app_base, container, false);
         viewContent = (FrameLayout) view.findViewById(R.id.view_content);
-        activity = getActivity();
         initStatusLayout();
         unbinder = ButterKnife.bind(this, view);//绑定黄油刀
 

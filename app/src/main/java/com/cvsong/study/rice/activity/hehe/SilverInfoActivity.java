@@ -2,12 +2,14 @@ package com.cvsong.study.rice.activity.hehe;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.cvsong.study.library.net.entity.HttpCallBack;
 import com.cvsong.study.library.net.entity.Result;
 import com.cvsong.study.rice.R;
+import com.cvsong.study.rice.adapter.RvSilverInfoAdapter;
 import com.cvsong.study.rice.base.AppBaseActivity;
 import com.cvsong.study.rice.entity.SilverInfoEntity;
 import com.cvsong.study.rice.manager.http.AppHttpManage;
@@ -27,28 +29,8 @@ import butterknife.ButterKnife;
 public class SilverInfoActivity extends AppBaseActivity {
 
 
-    @BindView(R.id.tvName)
-    TextView tvName;
-    @BindView(R.id.tvClosePri)
-    TextView tvClosePri;
-    @BindView(R.id.tvHighPic)
-    TextView tvHighPic;
-    @BindView(R.id.tvLimit)
-    TextView tvLimit;
-    @BindView(R.id.tvLowPic)
-    TextView tvLowPic;
-    @BindView(R.id.tvOpenPri)
-    TextView tvOpenPri;
-    @BindView(R.id.tvTime)
-    TextView tvTime;
-    @BindView(R.id.tvTotalTurnover)
-    TextView tvTotalTurnover;
-    @BindView(R.id.tvTotalVol)
-    TextView tvTotalVol;
-    @BindView(R.id.tvVariety)
-    TextView tvVariety;
-    @BindView(R.id.tvYesterdayPic)
-    TextView tvYesterdayPic;
+    @BindView(R.id.rv_silver)
+    RecyclerView rvSilver;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 
@@ -84,29 +66,10 @@ public class SilverInfoActivity extends AppBaseActivity {
 
     //绑定数据
     private void bindData(List<SilverInfoEntity.ResultEntity> entity) {
-        if (entity == null || entity.size() == 0) {
-            return;
-        }
-
-        SilverInfoEntity.ResultEntity resultEntity = entity.get(0);
-        tvName.setText(resultEntity.getName());
-        tvClosePri.setText(resultEntity.getClosePri());
-        tvHighPic.setText(resultEntity.getHighPic());
-        tvLimit.setText(resultEntity.getLimit());
-        tvLowPic.setText(resultEntity.getLowPic());
-        tvOpenPri.setText(resultEntity.getOpenPri());
-        tvTime.setText(resultEntity.getTime());
-        tvTotalTurnover.setText(resultEntity.getTotalTurnover());
-        tvTotalVol.setText(resultEntity.getTotalVol());
-        tvVariety.setText(resultEntity.getVariety());
-        tvYesterdayPic.setText(resultEntity.getYesDayPic());
+        rvSilver.setLayoutManager(new LinearLayoutManager(this));
+        rvSilver.setAdapter(new RvSilverInfoAdapter(R.layout.item_silver_info,entity));
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

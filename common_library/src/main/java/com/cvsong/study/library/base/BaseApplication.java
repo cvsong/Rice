@@ -11,18 +11,18 @@ import com.cvsong.study.library.util.utilcode.util.LogUtils;
  */
 public class BaseApplication extends Application {
 
-    private static final String TAG = "BaseApplication";
+    private static final String TAG = BaseApplication.class.getSimpleName();
 
-    private static BaseApplication sInstance;
+    private static BaseApplication instance;
 
     public static BaseApplication getInstance() {
-        return sInstance;
+        return instance;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
+        instance = this;
         registerActivityLifecycleCallbacks(mCallbacks);
     }
 

@@ -81,7 +81,7 @@ public class HaHaFragment extends AppBaseFragment {
                 break;
             case R.id.btn_open_camera://打开图片选择
 //                ActivityUtils.startActivity(CustomScanActivity.class);
-                getSilverInfo();//获取白银信息
+//                getSilverInfo();//获取白银信息
                 break;
 
             case R.id.btn_qr_scan://二维码扫描

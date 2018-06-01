@@ -24,6 +24,8 @@ allprojects {
     repositories {
         jcenter()
         google()
+        //BaseRecyclerViewAdapterHelper 所需仓库配置
+        maven { url "https://jitpack.io" }
 
     }
 }

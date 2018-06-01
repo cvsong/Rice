@@ -189,6 +189,13 @@
 
 #-----------处理第三方依赖库---------
 
+##------------------工具库
+-keep class com.cvsong.study.library.util.utilcode.** { *; }
+-keepclassmembers class com.cvsong.study.library.util.utilcode.** { *; }
+-dontwarn com.cvsong.study.library.util.utilcode.**
+
+
+
 ##------------------Glide
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -244,7 +251,15 @@
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
 
 
-
+##------------------BaseRecyclerViewAdapterHelper
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
 
 
 

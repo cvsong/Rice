@@ -9,7 +9,7 @@ import com.cvsong.study.library.util.utilcode.util.ToastUtils;
 
 /**
  * BaseActivity-->负责业务逻辑无关的常用功能封装
- * <p>
+ *
  * Created by chenweisong on 2018/3/9.
  */
 
