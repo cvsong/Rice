@@ -15,5 +15,13 @@
         android:text="白银数据"
         android:textColor="@color/font_white"/>
 
+    <com.cvsong.study.library.wiget.CountDownButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_blue_grayd9"
+        android:text="开始倒计时"
+        android:textColor="@color/font_white"/>
+
 
 </LinearLayout>
