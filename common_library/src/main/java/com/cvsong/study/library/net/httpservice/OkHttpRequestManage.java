@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Dispatcher;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -60,16 +61,17 @@ public class OkHttpRequestManage implements IHttpRequest {
     private static Handler handler;
 
     private volatile static OkHttpRequestManage okHttpRequestManage;
-    public final OkHttpClient okHttpClient;
+
+    public static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(HttpConstants.CONNECT_TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(HttpConstants.WRITE_TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(HttpConstants.READ_TIME_OUT, TimeUnit.SECONDS)
+            .build();
 
     private OkHttpRequestManage() {
 
         handler = new Handler(Looper.getMainLooper());
-        okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(HttpConstants.CONNECT_TIME_OUT, TimeUnit.SECONDS)
-                .writeTimeout(HttpConstants.WRITE_TIME_OUT, TimeUnit.SECONDS)
-                .readTimeout(HttpConstants.READ_TIME_OUT, TimeUnit.SECONDS)
-                .build();
+
 
     }
 
@@ -104,7 +106,7 @@ public class OkHttpRequestManage implements IHttpRequest {
             @Override
             public void run() {
                 try {
-                    Request request = buildPostRequest(httpUrlManage, object, callBack);
+                    Request request = buildPostRequest(activity,httpUrlManage, object, callBack);
                     final Response response = okHttpClient.newCall(request).execute();
                     if (activity == null || activity.isFinishing()) {
                         return;
@@ -135,7 +137,7 @@ public class OkHttpRequestManage implements IHttpRequest {
         //请求前校验
         if (checkBeforeRequest(activity, httpUrlManage, callBack)) return;
         //构建Post请求体
-        final Request request = buildPostRequest(httpUrlManage, object, callBack);
+        final Request request = buildPostRequest(activity,httpUrlManage, object, callBack);
         if (request == null) {
             return;
         }
@@ -279,7 +281,7 @@ public class OkHttpRequestManage implements IHttpRequest {
      * 构建Post请求体
      */
 
-    private static Request buildPostRequest(final IHttpUrlManage httpUrlManage, Object object, IHttpResponseCallBack callBack) {
+    private static Request buildPostRequest(Activity activity,final IHttpUrlManage httpUrlManage, Object object, IHttpResponseCallBack callBack) {
 
         String jsonStr = object == null ? "" : GsonUtil.GsonString(object);
         final String httpUrl = httpUrlManage.getUrl();
@@ -306,6 +308,7 @@ public class OkHttpRequestManage implements IHttpRequest {
                     .addHeader(ACCESSTOKEN, token)//请求头中添加token
                     .url(httpUrlManage.getUrl())
                     .post(body)
+                    .tag(activity)//设置网络请求标记
                     .build();
 
         } catch (Exception e) {
@@ -476,4 +479,34 @@ public class OkHttpRequestManage implements IHttpRequest {
             }
         });
     }
+
+
+    /**
+     * 取消网络请求
+     *
+     * @param tag
+     */
+    public static void cancel(Object tag) {
+        Dispatcher dispatcher = okHttpClient.dispatcher();
+        synchronized (dispatcher) {
+            for (Call call : dispatcher.queuedCalls()) {
+                if (tag.equals(call.request().tag())) {
+                    call.cancel();
+                }
+            }
+            for (Call call : dispatcher.runningCalls()) {
+                if (tag.equals(call.request().tag())) {
+                    call.cancel();
+                }
+            }
+        }
+    }
+
+    /**
+     * 取消全部的网络请求
+     */
+    public static void cancelAll() {
+        okHttpClient.dispatcher().cancelAll();
+    }
+
 }

@@ -16,6 +16,10 @@
     <!-- 设置手机震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!--Android8.0适配 安装未知来源应用的权限-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+
     <!-- 读写sd卡 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
