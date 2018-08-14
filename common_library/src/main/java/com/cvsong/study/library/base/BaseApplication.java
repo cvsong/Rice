@@ -2,7 +2,9 @@ package com.cvsong.study.library.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 
@@ -17,6 +19,13 @@ public class BaseApplication extends Application {
 
     public static BaseApplication getInstance() {
         return instance;
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);//解决64K方法数限制
     }
 
     @Override

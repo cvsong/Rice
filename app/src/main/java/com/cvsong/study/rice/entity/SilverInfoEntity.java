@@ -3,11 +3,13 @@ package com.cvsong.study.rice.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 上海交易所现货白银数据查询 响应体
  * Created by chenweisong on 2018/5/31.
  */
-
+@Data
 public class SilverInfoEntity implements Serializable {
 
     /**
@@ -20,30 +22,9 @@ public class SilverInfoEntity implements Serializable {
     private String retCode;
     private List<ResultEntity> result;
 
-    public String getMsg() {
-        return msg;
-    }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
-    public String getRetCode() {
-        return retCode;
-    }
-
-    public void setRetCode(String retCode) {
-        this.retCode = retCode;
-    }
-
-    public List<ResultEntity> getResult() {
-        return result;
-    }
-
-    public void setResult(List<ResultEntity> result) {
-        this.result = result;
-    }
-
+    @Data
     public static class ResultEntity {
         /**
          * closePri : 3634.00
@@ -71,92 +52,5 @@ public class SilverInfoEntity implements Serializable {
         private String variety;
         private String yesDayPic;
 
-        public String getClosePri() {
-            return closePri;
-        }
-
-        public void setClosePri(String closePri) {
-            this.closePri = closePri;
-        }
-
-        public String getHighPic() {
-            return highPic;
-        }
-
-        public void setHighPic(String highPic) {
-            this.highPic = highPic;
-        }
-
-        public String getLimit() {
-            return limit;
-        }
-
-        public void setLimit(String limit) {
-            this.limit = limit;
-        }
-
-        public String getLowPic() {
-            return lowPic;
-        }
-
-        public void setLowPic(String lowPic) {
-            this.lowPic = lowPic;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getOpenPri() {
-            return openPri;
-        }
-
-        public void setOpenPri(String openPri) {
-            this.openPri = openPri;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public String getTotalTurnover() {
-            return totalTurnover;
-        }
-
-        public void setTotalTurnover(String totalTurnover) {
-            this.totalTurnover = totalTurnover;
-        }
-
-        public String getTotalVol() {
-            return totalVol;
-        }
-
-        public void setTotalVol(String totalVol) {
-            this.totalVol = totalVol;
-        }
-
-        public String getVariety() {
-            return variety;
-        }
-
-        public void setVariety(String variety) {
-            this.variety = variety;
-        }
-
-        public String getYesDayPic() {
-            return yesDayPic;
-        }
-
-        public void setYesDayPic(String yesDayPic) {
-            this.yesDayPic = yesDayPic;
-        }
     }
 }

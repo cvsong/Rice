@@ -66,6 +66,7 @@ android {
         /*versionName-应用版本名称*/
         versionName version_name
         /*multiDexEnabled-用于配置该BuildType是否启用自动拆分多个Dex的功能*/
+        //解决65536问题
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -206,7 +207,12 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile "com.android.support:percent:$support_version"
+
+    // lombok 方便实体类通过注解生成相关方法
+    compile 'org.projectlombok:lombok:1.16.20'
+    annotationProcessor 'org.projectlombok:lombok:1.16.20'
+
+
 
 }
 
@@ -233,7 +239,7 @@ def CVSVersionCode = getSvnRevision()
 //瓦力多渠道打包配置
 walle {
     // 指定渠道包的输出路径
-    apkOutputFolder = new File("${project.rootDir}/MultiChannelPackages/v${version_code}_" + CVSVersionCode)
+    apkOutputFolder = new File("${project.rootDir}/multi_apk/v${version_code}_" + CVSVersionCode)
     // 定制渠道包的APK的文件名称
     apkFileNameFormat = '${projectName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-' + CVSVersionCode + '.apk'
 //    projectName - 项目名字

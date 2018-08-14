@@ -40,6 +40,9 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
+    /*解决65536问题*/
+    compile 'com.android.support:multidex:1.0.3'
+
 
     /*图片加载工具-Glide*/
     compile "com.github.bumptech.glide:glide:$gilde_version"
@@ -74,6 +77,13 @@ dependencies {
 
     // walle 方便App内用代码获取当前渠道号
     compile 'com.meituan.android.walle:library:1.1.6'
+
+
+    //百分比布局
+    compile "com.android.support:percent:$support_version"
+
+
+
 
 
 }
