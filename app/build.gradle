@@ -8,6 +8,16 @@ Test插件id：com.android.test.
 */
 
 apply plugin: 'com.android.application'
+apply plugin: 'walle'
+
+
+
+
+
+
+
+
+
 
 //签名配置信息文件
 File signPropertiesFile = file('sign/keystore.properties')
@@ -61,16 +71,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         /*分包配置*/
-        splits {
-            abi {
-                enable true
-                reset()
-                //为不同的CPU架构创建不同的APK
-                include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
-                //是否打出一个全量的包
-                universalApk true
-            }
-        }
+//        splits {
+//            abi {
+//                enable true
+//                reset()
+//                //为不同的CPU架构创建不同的APK
+//                include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
+//                //是否打出一个全量的包
+//                universalApk true
+//            }
+//        }
 
 
     }
@@ -199,3 +209,45 @@ dependencies {
     compile "com.android.support:percent:$support_version"
 
 }
+
+
+import org.tmatesoft.svn.core.wc.*
+
+def getSvnRevision() {
+    try {
+        ISVNOptions options = SVNWCUtil.createDefaultOptions(true)
+        SVNClientManager clientManager = SVNClientManager.newInstance(options)
+        SVNStatusClient statusClient = clientManager.getStatusClient()
+        SVNStatus status = statusClient.doStatus(projectDir, false)
+        SVNRevision revision = status.getCommittedRevision()
+        return revision.getNumber()
+    } catch (e) {
+        return "0"
+    }
+}
+
+def CVSVersionCode = getSvnRevision()
+
+
+
+//瓦力多渠道打包配置
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.rootDir}/MultiChannelPackages/v${version_code}_" + CVSVersionCode)
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${projectName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-' + CVSVersionCode + '.apk'
+//    projectName - 项目名字
+//    appName - App模块名字
+//    packageName - applicationId (App包名packageName)
+//    buildType - buildType (release/debug等)
+//    channel - channel名称 (对应渠道打包中的渠道名字)
+//    versionName - versionName (显示用的版本号)
+//    versionCode - versionCode (内部版本号)
+//    buildTime - buildTime (编译构建日期时间)
+//    fileSHA1 - fileSHA1 (最终APK文件的SHA1哈希值)
+//    flavorName - 编译构建 productFlavors 名
+    // 渠道配置文件
+    channelFile = new File("${project.rootDir}/config/markets.txt")
+//    configFile = new File("${project.rootDir}/config/config.json")
+}
+

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
@@ -71,6 +72,13 @@ dependencies {
     /*BaseRecyclerViewAdapterHelper*/
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
 
+    // walle 方便App内用代码获取当前渠道号
+    compile 'com.meituan.android.walle:library:1.1.6'
 
 
 }
+
+
+
+
+
