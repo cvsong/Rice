@@ -74,7 +74,7 @@ public class SilverInfoActivity extends AppBaseActivity {
     //绑定数据
     private void bindData(List<SilverInfoEntity.ResultEntity> entity) {
         rvSilver.setLayoutManager(new LinearLayoutManager(this));
-        rvSilver.setAdapter(new RvSilverInfoAdapter(R.layout.item_silver_info,entity));
+        rvSilver.setAdapter(new RvSilverInfoAdapter(entity));
 
     }
 

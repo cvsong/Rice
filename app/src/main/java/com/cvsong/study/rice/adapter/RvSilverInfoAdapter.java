@@ -16,8 +16,9 @@ import java.util.List;
 
 public class RvSilverInfoAdapter extends BaseQuickAdapter<SilverInfoEntity.ResultEntity, BaseViewHolder> {
 
-    public RvSilverInfoAdapter(int layoutResId, @Nullable List<SilverInfoEntity.ResultEntity> data) {
-        super(layoutResId, data);
+    public RvSilverInfoAdapter(@Nullable List<SilverInfoEntity.ResultEntity> data) {
+
+        super(R.layout.item_silver_info, data);
     }
 
     @Override
