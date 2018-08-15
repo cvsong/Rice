@@ -62,6 +62,7 @@ public class DownloadService extends Service {
 
         // 注册下载完成监听器
         registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         //注册通知栏点击监听器
         registerReceiver(onNotificationClick, new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED));
 
@@ -174,10 +175,12 @@ public class DownloadService extends Service {
                     ToastUtils.showShort("downloadId不能为null");
                 }
                 if (id==(Long.valueOf(downloadId)) && c.getInt(columnIndex) == DownloadManager.STATUS_SUCCESSFUL) {
+
                     String localFilePath = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
                     AppSpUtils.getInstance().put(AppSpUtils.APK_DOWNLOAD_ID,"-1");
-                    DownloadUtils.installApkByGuide(DownloadService.this,
-                            localFilePath.replaceFirst("file://", ""));
+                    DownloadUtils.installApkByGuide(DownloadService.this,localFilePath.replaceFirst("file://", ""));
+
+
 //                    DownloadUtils.installApkByGuide(DownloadService.this, localFilePath);
                     stopSelf();
                 }

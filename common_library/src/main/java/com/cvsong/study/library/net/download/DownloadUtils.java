@@ -38,6 +38,14 @@ public class DownloadUtils {
 
 
 
+
+
+
+
+
+
+
+
     /**
      * 通过安装引导页安装apk
      *

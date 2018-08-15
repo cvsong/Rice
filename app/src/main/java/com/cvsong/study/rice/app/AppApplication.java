@@ -17,17 +17,11 @@ import com.squareup.leakcanary.LeakCanary;
  */
 public class AppApplication extends BaseApplication {
 
-    private static AppApplication instance;
-
-    public static AppApplication getInstance() {
-        return instance;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        Utils.init(this);//初始化全局Context以及Activity堆栈管理
+
         initLeakCanary();//初始化内存泄露检查工具
         initLog();//初始化Log日志打印设置
         initCrash();//初始化Crash捕捉

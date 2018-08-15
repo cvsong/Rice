@@ -14,5 +14,20 @@
         android:textSize="@dimen/fontSize_18"/>
 
 
+    <Button
+        android:id="@+id/btn_make_bug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Make Bug"/>
+
+
+    <Button
+        android:id="@+id/btn_fix_bug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Fix Bug"/>
+
 
 </LinearLayout>
