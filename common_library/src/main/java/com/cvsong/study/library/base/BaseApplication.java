@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.cvsong.study.library.andfix.AndFixManager;
+import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 
 /**
@@ -32,7 +34,21 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        //注册Activity监听
         registerActivityLifecycleCallbacks(mCallbacks);
+
+        //初始化AndFixManager
+        initAndFix();
+    }
+
+
+    /**
+     * 初始化AndFixManager
+     */
+    private void initAndFix() {
+        AndFixManager.getInstance().initAndFix(this, AppUtils.getAppVersionName());
+
     }
 
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
