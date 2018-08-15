@@ -55,8 +55,8 @@ public class HttpRequestUtil implements IHttpRequest {
      * 异步POST请求
      */
     @Override
-    public void postAsynRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, Class clazz, IHttpResponseCallBack callBack) {
-        httpRequest.postAsynRequest(activity, httpUrlManage, object, clazz, callBack);
+    public void postAsyncRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, Class clazz, IHttpResponseCallBack callBack) {
+        httpRequest.postAsyncRequest(activity, httpUrlManage, object, clazz, callBack);
     }
 
 //    /**
@@ -71,7 +71,7 @@ public class HttpRequestUtil implements IHttpRequest {
      * 异步GET请求
      */
     @Override
-    public void getAsynRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, Class clazz, IHttpResponseCallBack callBack) {
-        httpRequest.getAsynRequest(activity, httpUrlManage, object, clazz, callBack);
+    public void getAsyncRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, Class clazz, IHttpResponseCallBack callBack) {
+        httpRequest.getAsyncRequest(activity, httpUrlManage, object, clazz, callBack);
     }
 }

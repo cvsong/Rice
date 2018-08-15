@@ -14,8 +14,8 @@ public class HttpConstants {
 
     /*加解密开关*/
     public static boolean RSA_SWITCH = true;
-    public static final String BASE_URL = "176.28";
-    public static final String URL_PORT = ":8080";
+    public static final String BASE_URL = "10.138.60.172";
+    public static final String URL_PORT = ":10000";
 
     //RSA加解密key
     public static final String RSA_KEY = new JniUtil().getRsaKey(Utils.getApp());
@@ -39,7 +39,10 @@ public class HttpConstants {
 
     /*********************请求结果码***********************/
     //请求成功
-    public static final String RESULT_STATUS_OK = "0";
+    public static final String RESULT_STATUS_OK = "000";
+
+    //token失效
+    public static final String RESULT_STATUS_TOOKEN_USELESS = "007";
 
     //调用失败
     public static final String RESULT_STATUS_FAILE = "1";

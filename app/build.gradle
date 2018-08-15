@@ -11,14 +11,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'walle'
 
 
-
-
-
-
-
-
-
-
 //签名配置信息文件
 File signPropertiesFile = file('sign/keystore.properties')
 

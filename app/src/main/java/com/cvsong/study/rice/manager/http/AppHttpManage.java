@@ -28,7 +28,7 @@ public class AppHttpManage {
      * 检查版本更新
      */
     public static void checkVersionUpdate(Activity activity, final HttpCallBack<TestVersionUpdateEntity> callBack) {
-        HttpRequestUtil.getInstance().postAsynRequest(activity, HttpUrlManage.RICE_SYSTEM_VERSION_UPDATE, null, Object.class, new HttpCallBack<Object>() {
+        HttpRequestUtil.getInstance().postAsyncRequest(activity, HttpUrlManage.RICE_SYSTEM_VERSION_UPDATE, null, Object.class, new HttpCallBack<Object>() {
             @Override
             public void onSuccess(Result result, Object entity) {
                 super.onSuccess(result, entity);
@@ -37,6 +37,7 @@ public class AppHttpManage {
 
             @Override
             public void onFailure(Request request, Exception exception) {
+                //TODO
 //                super.onFailure(request, exception);
                 initTestEntity(null);
             }
@@ -56,7 +57,7 @@ public class AppHttpManage {
      * 用户登录
      */
     public static void makeLogin(Activity activity, String userName, String psw, final HttpCallBack<Object> callBack) {
-        HttpRequestUtil.getInstance().postAsynRequest(activity, HttpUrlManage.RICE_SYSTEM_LOGIN, null, Object.class, new HttpCallBack<Object>() {
+        HttpRequestUtil.getInstance().postAsyncRequest(activity, HttpUrlManage.RICE_SYSTEM_LOGIN, null, Object.class, new HttpCallBack<Object>() {
             @Override
             public void onSuccess(Result result, Object entity) {
                 super.onSuccess(result, entity);
@@ -77,7 +78,7 @@ public class AppHttpManage {
      * 获取白银信息
      */
     public static void getSilverInfo(Activity activity,final HttpCallBack<List<SilverInfoEntity.ResultEntity>> callBack) {
-        HttpRequestUtil.getInstance().getAsynRequest(activity, HttpUrlManage.RICE_SILVER_INFO, null, SilverInfoEntity.class, new HttpCallBack<SilverInfoEntity>() {
+        HttpRequestUtil.getInstance().getAsyncRequest(activity, HttpUrlManage.RICE_SILVER_INFO, null, SilverInfoEntity.class, new HttpCallBack<SilverInfoEntity>() {
             @Override
             public void onSuccess(Result result, SilverInfoEntity entity) {
                 super.onSuccess(result, entity);

@@ -33,7 +33,7 @@ public enum HttpUrlManage implements IHttpUrlManage {
     public enum URLParameter {
         //公共部分
         SYSTEM_LOGIN("http://%s%s/SysAdmin/rpc/login", NO, HTTP_NORMAL, HTTP_NORMAL, NO, NO),//登录
-        RICE_SYSTEM_VERSION_UPDATE("http://%s%s/SysAdmin/rpc/login", NO, HTTP_NORMAL, HTTP_NORMAL, NO, NO),//版本更新
+        RICE_SYSTEM_VERSION_UPDATE("http://%s%s/app/version/newVersion", NO, HTTP_NORMAL, HTTP_NORMAL, NO, NO),//版本更新
 
 
 

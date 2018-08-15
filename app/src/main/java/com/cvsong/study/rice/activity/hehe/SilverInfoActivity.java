@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Request;
 
 /**
  * 白银数据展示页面
@@ -59,6 +60,12 @@ public class SilverInfoActivity extends AppBaseActivity {
                 super.onSuccess(result, entity);
                 refreshLayout.finishRefresh();
                 bindData(entity);
+            }
+
+            @Override
+            public void onFailure(Request request, Exception exception) {
+                super.onFailure(request, exception);
+                refreshLayout.finishRefresh();
             }
         });
 

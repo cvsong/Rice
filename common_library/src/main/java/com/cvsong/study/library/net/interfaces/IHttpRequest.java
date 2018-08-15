@@ -16,7 +16,7 @@ public interface IHttpRequest {
     /**
      * post异步请求
      */
-    void postAsynRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack);
+    void postAsyncRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack);
 
 
 //    /**
@@ -27,6 +27,6 @@ public interface IHttpRequest {
     /**
      * get异步请求
      */
-    void getAsynRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack);
+    void getAsyncRequest(Activity activity, IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack);
 
 }

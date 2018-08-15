@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.cvsong.study.library.ndk.JniUtil;
+import com.cvsong.study.library.net.cache.ACache;
 import com.cvsong.study.library.util.GsonUtil;
 import com.cvsong.study.library.net.entity.Result;
 import com.cvsong.study.library.net.exception.AppHttpException;
@@ -15,6 +16,7 @@ import com.cvsong.study.library.net.interfaces.IHttpResponseCallBack;
 import com.cvsong.study.library.net.interfaces.IHttpUrlManage;
 import com.cvsong.study.library.util.RSAUtil;
 import com.cvsong.study.library.util.app_tools.AppSpUtils;
+import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 
 
@@ -30,15 +32,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Dispatcher;
 import okhttp3.FormBody;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static android.graphics.Typeface.NORMAL;
 
@@ -66,6 +71,19 @@ public class OkHttpRequestManage implements IHttpRequest {
             .connectTimeout(HttpConstants.CONNECT_TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(HttpConstants.WRITE_TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(HttpConstants.READ_TIME_OUT, TimeUnit.SECONDS)
+            .addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    boolean connected = HttpRequestHelper.isNetworkConnected();
+                    if (!connected) {//网络连接不可用时强制使用本地缓存
+                        request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
+                    }
+                    Response response = chain.proceed(request);
+
+                    return response;
+                }
+            })
             .build();
 
     private OkHttpRequestManage() {
@@ -106,7 +124,7 @@ public class OkHttpRequestManage implements IHttpRequest {
             @Override
             public void run() {
                 try {
-                    Request request = buildPostRequest(activity,httpUrlManage, object, callBack);
+                    Request request = buildPostRequest(activity, httpUrlManage, object, callBack);
                     final Response response = okHttpClient.newCall(request).execute();
                     if (activity == null || activity.isFinishing()) {
                         return;
@@ -133,11 +151,11 @@ public class OkHttpRequestManage implements IHttpRequest {
      * @param callBack      回调
      */
     @Override
-    public void postAsynRequest(final Activity activity, final IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack) {
+    public void postAsyncRequest(final Activity activity, final IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack) {
         //请求前校验
         if (checkBeforeRequest(activity, httpUrlManage, callBack)) return;
         //构建Post请求体
-        final Request request = buildPostRequest(activity,httpUrlManage, object, callBack);
+        final Request request = buildPostRequest(activity, httpUrlManage, object, callBack);
         if (request == null) {
             return;
         }
@@ -171,7 +189,7 @@ public class OkHttpRequestManage implements IHttpRequest {
      * @param callBack
      */
     @Override
-    public void getAsynRequest(final Activity activity, final IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack) {
+    public void getAsyncRequest(final Activity activity, final IHttpUrlManage httpUrlManage, Object object, final Class clazz, final IHttpResponseCallBack callBack) {
         if (activity == null || activity.isFinishing()) {
             return;
         }
@@ -238,17 +256,13 @@ public class OkHttpRequestManage implements IHttpRequest {
             throw new NullPointerException("网络请求URL管理不能为空");
         }
 
-        if (httpUrlManage.isNeedCache()) {//是否需要缓存
+        if (httpUrlManage.isNeedCache()) {//需要缓存
             //TODO
-//                Object result = LocalCacheHandler.getDefaultCacheHandler().read(httpUrlManage.getUrl());
-//                if (result != null) {
-//                    callBack.onSuccess(null, result);
-//                }
         }
 
         // 网络连接检查
         if (!HttpRequestHelper.isNetworkConnected()) {
-            callBack.onFailure(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_NET_ERROR, "网络连接异常"));
+            callBack.onFailure(null, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_NET_ERROR, "网络连接异常,请检查网络"));
             return true;
         }
 
@@ -281,7 +295,7 @@ public class OkHttpRequestManage implements IHttpRequest {
      * 构建Post请求体
      */
 
-    private static Request buildPostRequest(Activity activity,final IHttpUrlManage httpUrlManage, Object object, IHttpResponseCallBack callBack) {
+    private static Request buildPostRequest(Activity activity, final IHttpUrlManage httpUrlManage, Object object, IHttpResponseCallBack callBack) {
 
         String jsonStr = object == null ? "" : GsonUtil.GsonString(object);
         final String httpUrl = httpUrlManage.getUrl();
@@ -304,9 +318,14 @@ public class OkHttpRequestManage implements IHttpRequest {
                 body = RequestBody.create(JSON, jsonStr);
             }
 
+            CacheControl cacheControl = new CacheControl.Builder()
+                    .maxAge(10, TimeUnit.MILLISECONDS)//指示客户机可以接收生存期不大于指定时间的响应。
+                    .build();
+
             return new Request.Builder()
                     .addHeader(ACCESSTOKEN, token)//请求头中添加token
                     .url(httpUrlManage.getUrl())
+                    .cacheControl(cacheControl)//缓存控制
                     .post(body)
                     .tag(activity)//设置网络请求标记
                     .build();
@@ -338,12 +357,23 @@ public class OkHttpRequestManage implements IHttpRequest {
      */
     private void handleSuccessResponse(final Request request, final Response response, final IHttpResponseCallBack callBack, final IHttpUrlManage httpUrlManage, Class clazz) {
 
+        if (response == null) {
+            handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "返回体为空"), callBack);
+            return;
+        }
+
         if (!response.isSuccessful()) {//校验是否成功
             handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "http状态码" + response.code()), callBack);
             return;
         }
 
-        if (response.body().contentLength() == 0) {
+        ResponseBody body = response.body();
+        if (body == null) {
+            handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "返回结果体为空"), callBack);
+            return;
+        }
+
+        if (body.contentLength() == 0) {
             handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "数据转换异常"), callBack);
             return;
         }
@@ -356,22 +386,27 @@ public class OkHttpRequestManage implements IHttpRequest {
 
         try {
             //对成功结果进行处理
-            String resStr = response.body().string();
+            String resStr = body.string();
             if (TextUtils.isEmpty(resStr)) {
                 handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "请求结果为空"), callBack);
                 return;
             }
             String result;
-            if (httpUrlManage.isNeedDecryptResponseData()) {//是否需要解密响应数据
 
-                //对数据进行解密
-                result = RSAUtil.decryptByPrivateKey(resStr, HttpConstants.RSA_KEY);//内部已做Base64转换
+            if (httpUrlManage.isNeedCache()) {//数据缓存
+                ACache.get(Utils.getApp()).put(httpUrlManage.getUrl(), resStr);
+            }
+
+
+            if (httpUrlManage.isNeedDecryptResponseData()) {//是否需要解密响应数据
+                result = RSAUtil.decryptByPrivateKey(resStr, HttpConstants.RSA_KEY);//对数据进行解密-内部已做Base64转换
             } else {
                 result = resStr;
             }
+
             LogUtils.e(TAG, "Url类型：" + httpUrlManage.getUrlDesc() + "，网络请求返回数据:" + result);
 
-            if (httpUrlManage.getResponseDataType() == IHttpUrlManage.HTTP_NORMAL) {
+            if (httpUrlManage.getResponseDataType() == IHttpUrlManage.HTTP_NORMAL) {//外层数据统一的请求
                 //处理正常的响应结果
                 handleNormalResponse(request, callBack, httpUrlManage, clazz, result);
 
@@ -401,54 +436,42 @@ public class OkHttpRequestManage implements IHttpRequest {
     /**
      * 处理正常的响应结果
      */
-    private void handleNormalResponse(final Request request, final IHttpResponseCallBack callBack, final IHttpUrlManage httpUrlManage, Class clazz, String result) {
+    private void handleNormalResponse(final Request request, final IHttpResponseCallBack callBack, final IHttpUrlManage httpUrlManage, Class clazz, final String result) {
         //解析最外层数据
         final Result res = GsonUtil.GsonToBean(result, Result.class);
+        if (res == null) {
+            handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "请求结果外层数据Json解析异常"), callBack);
+            return;
+        }
 
         final Object obj;
 
         //把Object对象转换成json字符串然后在根据对象进行重新转换
         String retValueString = GsonUtil.GsonString(res.getData());
+
         if (!TextUtils.isEmpty(retValueString) && !((clazz == String.class) || (clazz == Object.class))) {
             obj = GsonUtil.GsonToBean(retValueString, clazz);
         } else {
             obj = retValueString;
         }
-//            if (res == null) {
-//                handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, "请求结果外层数据异常"), callBack);
-//                return;
-//            }
+
         handler.post(new Runnable() {
             @Override
             public void run() {
 
                 switch (res.getStatus()) {
 
-                    case HttpConstants.RESULT_STATUS_OK://请求成功
-
-                        switch (res.getCode()) {
-                            case HttpConstants.RESULT_CODE_TOKEN_INVALIDATION://token失效
-                                callBack.onTokenInvalidation();
-                                break;
-
-                            case HttpConstants.RESULT_CODE_OK:
-
-                                if (httpUrlManage.isNeedCache()) {//是否需要缓存
-                                    //TODO 缓存处理
-                                    //  ACache.get(AppUtils.getContext()).put(httpUrlManage.getUrl(),result);
-                                }
-                                callBack.onSuccess(res, obj);
-                                break;
-                            default:
-                                callBack.onFailure(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()));
-                                break;
-
-                        }
+                    case HttpConstants.RESULT_STATUS_OK:
+                        callBack.onSuccess(res, obj);
                         break;
 
+                    case HttpConstants.RESULT_STATUS_TOOKEN_USELESS://token失效
+                        callBack.onTokenInvalidation();
+                        break;
                     default:
-                        handleFailResponse(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()), callBack);
+                        callBack.onFailure(request, new AppHttpException(HttpExceptionConstant.HTTP_EXCEPTION_RESPONSE, res.getMessage()));
                         break;
+
                 }
             }
         });
@@ -487,14 +510,15 @@ public class OkHttpRequestManage implements IHttpRequest {
      * @param tag
      */
     public static void cancel(Object tag) {
+
         Dispatcher dispatcher = okHttpClient.dispatcher();
         synchronized (dispatcher) {
-            for (Call call : dispatcher.queuedCalls()) {
+            for (Call call : dispatcher.queuedCalls()) {//取消请求队列中的请求
                 if (tag.equals(call.request().tag())) {
                     call.cancel();
                 }
             }
-            for (Call call : dispatcher.runningCalls()) {
+            for (Call call : dispatcher.runningCalls()) {//取消正在执行的请求
                 if (tag.equals(call.request().tag())) {
                     call.cancel();
                 }
