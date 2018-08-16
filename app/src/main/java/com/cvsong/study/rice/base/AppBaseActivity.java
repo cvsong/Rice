@@ -20,6 +20,7 @@ import butterknife.Unbinder;
 public abstract class AppBaseActivity extends BaseActivity implements IBaseView {
 
 
+    protected  String TAG;
     private long lastClick = 0;//上次点击时间
     protected StatusLayoutManager statusLayoutManager;
     private LinearLayout llContent;
@@ -42,6 +43,7 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         initStatusLayout();//初始化多状态布局
         unbinder = ButterKnife.bind(this);//绑定黄油刀
         activity=this;
+        TAG = this.getClass().getSimpleName();
         initView(savedInstanceState,llContent);//View初始化
         loadData();//加载数据
 

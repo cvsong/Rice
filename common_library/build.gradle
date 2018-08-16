@@ -82,8 +82,6 @@ dependencies {
     //百分比布局
     compile "com.android.support:percent:$support_version"
 
-    //热修复框架Andfix
-    compile 'com.alipay.euler:andfix:0.5.0@aar'
 
 
 

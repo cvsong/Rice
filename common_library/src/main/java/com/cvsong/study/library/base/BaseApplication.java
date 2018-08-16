@@ -6,8 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
-import com.cvsong.study.library.andfix.AndFixUtils;
-import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.library.util.utilcode.util.Utils;
 
@@ -75,18 +73,8 @@ public class BaseApplication extends Application {
         //注册Activity监听
         registerActivityLifecycleCallbacks(mCallbacks);
 
-        //初始化AndFixManager
-        initAndFix();
     }
 
-
-
-    /**
-     * 初始化AndFixManager
-     */
-    private void initAndFix() {
-        AndFixUtils.getInstance().initAndFix(this, AppUtils.getAppVersionName());
-    }
 
 
 }
