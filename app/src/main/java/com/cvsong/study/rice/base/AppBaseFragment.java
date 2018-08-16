@@ -30,7 +30,6 @@ public abstract class AppBaseFragment extends BaseFragment
     private Unbinder unbinder;
     private FrameLayout viewContent;
     private long lastClick = 0;
-    protected String TAG;//Log标记
 
     @Nullable
     @Override
@@ -39,7 +38,6 @@ public abstract class AppBaseFragment extends BaseFragment
         viewContent = (FrameLayout) view.findViewById(R.id.view_content);
         initStatusLayout();
         unbinder = ButterKnife.bind(this, view);//绑定黄油刀
-        TAG = this.getClass().getSimpleName();
         return view;
     }
 

@@ -21,7 +21,6 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
 
 
     private long lastClick = 0;//上次点击时间
-    protected String TAG;//Log标记
     protected StatusLayoutManager statusLayoutManager;
     private LinearLayout llContent;
     private Unbinder unbinder;
@@ -35,7 +34,6 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         setContentView(R.layout.activity_app_base);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
 
-        TAG = this.getClass().getSimpleName();
 
         llContent = findViewById(R.id.ll_content);
         titleView = findViewById(R.id.title_view);

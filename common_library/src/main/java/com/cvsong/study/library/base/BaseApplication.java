@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
-import com.cvsong.study.library.andfix.AndFixManager;
+import com.cvsong.study.library.andfix.AndFixUtils;
 import com.cvsong.study.library.util.utilcode.util.AppUtils;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.library.util.utilcode.util.Utils;
@@ -85,7 +85,7 @@ public class BaseApplication extends Application {
      * 初始化AndFixManager
      */
     private void initAndFix() {
-        AndFixManager.getInstance().initAndFix(this, AppUtils.getAppVersionName());
+        AndFixUtils.getInstance().initAndFix(this, AppUtils.getAppVersionName());
     }
 
 

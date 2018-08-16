@@ -1,9 +1,9 @@
 package com.cvsong.study.library.andfix;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.alipay.euler.andfix.patch.PatchManager;
-import com.cvsong.study.library.util.utilcode.util.Utils;
 
 import java.io.IOException;
 
@@ -13,22 +13,22 @@ import java.io.IOException;
  * Created by chenweisong on 2018/8/15.
  */
 
-public class AndFixManager {
+public class AndFixUtils {
 
 
     private PatchManager patchManager;
 
-    private AndFixManager() {
+    private AndFixUtils() {
     }
 
 
     //静态内部类实现单例
     private static class AndFixManagerHandler {
-        private static AndFixManager instance = new AndFixManager();
+        private static AndFixUtils instance = new AndFixUtils();
     }
 
 
-    public static AndFixManager getInstance() {
+    public static AndFixUtils getInstance() {
 
         return AndFixManagerHandler.instance;
     }
@@ -43,9 +43,11 @@ public class AndFixManager {
         }
 
         Context applicationContext = context.getApplicationContext();
-        patchManager = new PatchManager(applicationContext);
+        patchManager = new PatchManager(applicationContext);//初始化阿里的热修复
         patchManager.init(appVersion);//current version
-        patchManager.loadPatch();
+        patchManager.loadPatch();//加载之前的apatch包
+        Log.e("TAG", appVersion);
+
     }
 
 

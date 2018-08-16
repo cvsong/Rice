@@ -15,19 +15,33 @@
 
 
     <Button
-        android:id="@+id/btn_make_bug"
+        android:id="@+id/btn_make_bug1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Make Bug"/>
+        android:text="Make Bug1"/>
+
+    <Button
+        android:id="@+id/btn_fix_bug1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Fix Bug1"/>
+
+    <Button
+        android:id="@+id/btn_make_bug2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Make Bug2"/>
 
 
     <Button
-        android:id="@+id/btn_fix_bug"
+        android:id="@+id/btn_fix_bug2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Fix Bug"/>
+        android:text="Fix Bug2"/>
 
 
 </LinearLayout>

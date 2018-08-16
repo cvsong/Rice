@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.cvsong.study.library.andfix.AndFixManager;
+import com.cvsong.study.library.andfix.AndFixUtils;
 import com.cvsong.study.library.andfix.PatchFilePathManager;
-import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseFragment;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,10 +26,18 @@ import butterknife.Unbinder;
 
 public class HiHiFragment extends AppBaseFragment {
 
-    @BindView(R.id.btn_make_bug)
-    Button btnMakeBug;
-    @BindView(R.id.btn_fix_bug)
-    Button btnFixBug;
+
+    private static final String TAG = HiHiFragment.class.getSimpleName();
+    @BindView(R.id.btn_make_bug1)
+    Button btnMakeBug1;
+    @BindView(R.id.btn_fix_bug1)
+    Button btnFixBug1;
+    @BindView(R.id.btn_make_bug2)
+    Button btnMakeBug2;
+    @BindView(R.id.btn_fix_bug2)
+    Button btnFixBug2;
+    Unbinder unbinder;
+
 
     public static HiHiFragment newInstance() {
         HiHiFragment fragment = new HiHiFragment();
@@ -46,12 +55,27 @@ public class HiHiFragment extends AppBaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState, View view) {
-        btnMakeBug.setOnClickListener(this);
-        btnFixBug.setOnClickListener(this);
+        btnMakeBug1.setOnClickListener(this);
+        btnMakeBug2.setOnClickListener(this);
+        btnFixBug1.setOnClickListener(this);
+        btnFixBug2.setOnClickListener(this);
+
     }
 
     @Override
     public void loadData() {
+
+        try {
+            File file = new File(PatchFilePathManager.PATCH_DIR);
+            if (file == null || !file.exists()) {
+                file.mkdir();
+                Log.e(TAG, "文件夹新建成功");
+            } else {
+                Log.e(TAG, "文件夹存在");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -61,12 +85,22 @@ public class HiHiFragment extends AppBaseFragment {
         super.onWidgetClick(view);
         int id = view.getId();
         switch (id) {
-            case R.id.btn_make_bug:
-                makeBug();//产生Bug
+            case R.id.btn_make_bug1:
+                makeBug1();//产生Bug
                 break;
-            case R.id.btn_fix_bug:
-                fixBug();//修复Bug
+            case R.id.btn_fix_bug1:
+                fixBug1();//修复Bug
                 break;
+
+             case R.id.btn_make_bug2:
+                makeBug2();//产生Bug
+                break;
+            case R.id.btn_fix_bug2:
+                fixBug2();//修复Bug
+                break;
+
+
+
         }
 
     }
@@ -74,9 +108,10 @@ public class HiHiFragment extends AppBaseFragment {
     /**
      * 产生Bug
      */
-    private void makeBug() {
+    private void makeBug1() {
 
-        String error = null;
+        String error = "Hello AndFix!!!!!!!!!!";
+//        String error = null;
 
         Log.e(TAG, error);
 
@@ -86,10 +121,39 @@ public class HiHiFragment extends AppBaseFragment {
     /**
      * 修复Bug
      */
-    private void fixBug() {
+    private void fixBug1() {
 
-        LogUtils.e(TAG,PatchFilePathManager.PATCH_FILE_NAME);
-        AndFixManager.getInstance().addPatch(PatchFilePathManager.PATCH_FILE_NAME);
+        Log.e(TAG, PatchFilePathManager.PATCH_FILE_NAME1);
+        //  /storage/emulated/0/apatch/study1.apatch
+        AndFixUtils.getInstance().addPatch(PatchFilePathManager.PATCH_FILE_NAME1);
 
     }
+
+
+     /**
+     * 产生Bug
+     */
+    private void makeBug2() {
+//
+//        int x = 5/2;
+//
+//        Log.e(TAG, String.valueOf(x));
+
+    }
+
+
+    /**
+     * 修复Bug
+     */
+    private void fixBug2() {
+
+        Log.e(TAG, PatchFilePathManager.PATCH_FILE_NAME2);
+        //  /storage/emulated/0/apatch/study2.apatch
+        AndFixUtils.getInstance().addPatch(PatchFilePathManager.PATCH_FILE_NAME2);
+
+    }
+
+
+
+
 }
