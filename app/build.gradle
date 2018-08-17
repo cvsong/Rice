@@ -60,8 +60,12 @@ android {
         /*multiDexEnabled-用于配置该BuildType是否启用自动拆分多个Dex的功能*/
         //解决65536问题
         multiDexEnabled true
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                UMENG_APPKEY: umeng_appkey,//友盟AppKey
+                CHANNEL_CODE: def_channel,//默认渠道号默认为qh360
+        ]
+
 
         /*分包配置*/
 //        splits {
@@ -144,6 +148,24 @@ android {
             resValue("string", "DEBUG", "true")
         }
     }
+
+    flavorDimensions "flavor"
+    productFlavors {
+        huawei {}
+        xiaomi {}
+        wandoujia {}
+        baidu {}
+        yingyongbao {}
+        qh360 {}
+        uc {}
+        meizu{}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [CHANNEL_CODE: name]
+    }
+
+
 
     /* *//*Gradle3.0.0及以上,必须要给flavor定义一个维度*//*
     flavorDimensions "test"

@@ -68,6 +68,27 @@
         </activity>
         <activity android:name=".activity.hehe.SilverInfoActivity">
         </activity>
+
+
+
+
+
+
+
+
+        <!--友盟AppKey配置-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="${UMENG_APPKEY}"/>
+
+        <!--友盟渠道号配置-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${CHANNEL_CODE}"/>
+
+
+
+
     </application>
 
 </manifest>

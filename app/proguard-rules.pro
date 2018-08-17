@@ -262,6 +262,21 @@
 }
 
 
+##------------------友盟统计
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+##引用应用的资源文件----包名
+-keep public class [com.cvsong.study.rice].R$*{
+public static final int *;
+}
+
 
 
 

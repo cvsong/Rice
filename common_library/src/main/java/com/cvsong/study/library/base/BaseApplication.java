@@ -5,9 +5,15 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
+import com.cvsong.study.library.util.AndroidManifestUtils;
+import com.cvsong.study.library.util.CommonUtils;
+import com.cvsong.study.library.util.app_tools.AppConfig;
 import com.cvsong.study.library.util.utilcode.util.LogUtils;
 import com.cvsong.study.library.util.utilcode.util.Utils;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 
 /**
  * 顶级BaseApplication
@@ -32,11 +38,15 @@ public class BaseApplication extends Application {
 
         @Override
         public void onActivityResumed(Activity activity) {
+            //友盟App使用时长统计
+            MobclickAgent.onResume(activity);
             LogUtils.d(TAG, "onActivityResumed() called with: activity = [" + activity + "]");
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
+            //友盟App使用时长统计
+            MobclickAgent.onPause(activity);
             LogUtils.d(TAG, "onActivityPaused() called with: activity = [" + activity + "]");
         }
 
@@ -72,8 +82,25 @@ public class BaseApplication extends Application {
 
         //注册Activity监听
         registerActivityLifecycleCallbacks(mCallbacks);
+        initUmentAnalyze();//初始化友盟统计
 
     }
+
+    /**
+     * 初始化友盟统计
+     */
+    private void initUmentAnalyze() {
+
+        String umengAppKey = AndroidManifestUtils.getMetaDataFromAppication(Utils.getApp(), AppConfig.UMENG_APPKEY);
+        String defChannel = AndroidManifestUtils.getMetaDataFromAppication(Utils.getApp(), AppConfig.UMENG_CHANNEL);
+        String channelCode = CommonUtils.getChannelCode(defChannel);//获取渠道号
+        Log.e("TAG", "umengAppKey:" + umengAppKey + ",defChannel:" + defChannel + ",channelCode:"+channelCode);
+
+        //初始化友盟统计Common库 参二:AppKey 参三:Channel 参四:设备类型 参五:Push推送业务的secret，需要集成Push功能时必须传入Push的secret，否则传空。
+        UMConfigure.init(this, null, null, UMConfigure.DEVICE_TYPE_PHONE, null);
+
+    }
+
 
 
 

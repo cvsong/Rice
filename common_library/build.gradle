@@ -11,7 +11,12 @@ android {
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [APP_ID_VALUE: app_id]
+        manifestPlaceholders = [
+
+                APP_ID_VALUE: app_id,//包名
+
+
+        ]
 
         /*ndk{}多平台编译,生成有so库的时候使用*/
         ndk {
@@ -82,8 +87,9 @@ dependencies {
     //百分比布局
     compile "com.android.support:percent:$support_version"
 
-
-
+    //集成友盟统计
+    compile 'com.umeng.sdk:common:1.5.0'
+    compile 'com.umeng.sdk:analytics:7.5.0'
 
 }
 

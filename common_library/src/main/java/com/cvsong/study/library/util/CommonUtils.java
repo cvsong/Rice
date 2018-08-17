@@ -8,7 +8,13 @@ import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+
+import com.cvsong.study.library.util.utilcode.util.StringUtils;
+import com.cvsong.study.library.util.utilcode.util.Utils;
+import com.meituan.android.walle.ChannelInfo;
+import com.meituan.android.walle.WalleChannelReader;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -56,7 +62,6 @@ public class CommonUtils {
     }
 
 
-
     /**
      * 获得当前时间
      *
@@ -85,7 +90,6 @@ public class CommonUtils {
     public static int Px2Dp(Context context, float px) {
         return (int) (px / context.getResources().getDisplayMetrics().density + 0.5f);
     }
-
 
 
     /**
@@ -125,9 +129,6 @@ public class CommonUtils {
         }
         return versionName;
     }
-
-
-
 
 
     /**
@@ -179,6 +180,7 @@ public class CommonUtils {
 
     /**
      * 格式化手机号
+     *
      * @param phoneNo
      * @return
      */
@@ -197,7 +199,6 @@ public class CommonUtils {
         phoneNo = phoneNo.trim();
         return phoneNo;
     }
-
 
 
     /**
@@ -226,7 +227,6 @@ public class CommonUtils {
     }
 
 
-
     /**
      * 去除字符串中的特殊字符只允中文
      */
@@ -241,9 +241,9 @@ public class CommonUtils {
     }
 
 
-
     /**
      * 获取屏幕图像
+     *
      * @param activity
      * @return
      */
@@ -277,5 +277,23 @@ public class CommonUtils {
         }
 
         return null;
+    }
+
+
+    /**
+     * 获取安装包的渠道号
+     *
+     * @param defChannel 默认渠道号
+     * @return
+     */
+    public static String getChannelCode(String defChannel) {
+        String channel = defChannel;
+        // 如果没有使用PackerNg打包添加渠道，默认返回的是""
+        ChannelInfo channelInfo = WalleChannelReader.getChannelInfo(Utils.getApp());
+        if (channelInfo != null) {
+            String apkChannel = channelInfo.getChannel();
+            channel = TextUtils.isEmpty(apkChannel) ? defChannel : apkChannel;
+        }
+        return channel;
     }
 }
