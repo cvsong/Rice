@@ -148,5 +148,9 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         if (unbinder != Unbinder.EMPTY) {
             unbinder.unbind();//解绑黄油刀
         }
+
+        if (llContent!=null) {//解决内存泄漏问题
+            llContent.removeAllViews();
+        }
     }
 }
