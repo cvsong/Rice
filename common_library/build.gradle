@@ -80,9 +80,6 @@ dependencies {
     /*BaseRecyclerViewAdapterHelper*/
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
 
-    // walle 方便App内用代码获取当前渠道号
-    compile 'com.meituan.android.walle:library:1.1.6'
-
 
     //百分比布局
     compile "com.android.support:percent:$support_version"

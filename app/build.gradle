@@ -8,8 +8,6 @@ Test插件id：com.android.test.
 */
 
 apply plugin: 'com.android.application'
-apply plugin: 'walle'
-
 
 //签名配置信息文件
 File signPropertiesFile = file('sign/keystore.properties')
@@ -65,7 +63,6 @@ android {
                 UMENG_APPKEY: umeng_appkey,//友盟AppKey
                 CHANNEL_CODE: def_channel,//默认渠道号默认为qh360
         ]
-
 
         /*分包配置*/
 //        splits {
@@ -124,7 +121,7 @@ android {
             minifyEnabled true//是否混淆编译
             zipAlignEnabled true//是否使用Zipalign工具压缩
             shrinkResources true//是否移除未利用的资源文件
-            versionNameSuffix "-release" //版本名称后缀
+//            versionNameSuffix "-release" //版本名称后缀
             //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
@@ -140,7 +137,7 @@ android {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-            versionNameSuffix "-debug"
+//            versionNameSuffix "-debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (signPropertiesFile.exists()) {
                 signingConfig signingConfigs.debug
@@ -149,22 +146,30 @@ android {
         }
     }
 
+    //多渠道打包配置
     flavorDimensions "flavor"
     productFlavors {
         huawei {}
         xiaomi {}
-        wandoujia {}
-        baidu {}
-        yingyongbao {}
-        qh360 {}
-        uc {}
-        meizu{}
+//        wandoujia {}
+//        baidu {}
+//        yingyongbao {}
+//        qh360 {}
+//        uc {}
+//        meizu {}
     }
 
+    //批量配置
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [CHANNEL_CODE: name]
     }
 
+    // 自定义输出apk名称
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "AppName-${variant.productFlavors[0].name}-v${variant.versionName}-${variant.buildType.name}.apk"
+        }
+    }
 
 
     /* *//*Gradle3.0.0及以上,必须要给flavor定义一个维度*//*
@@ -221,11 +226,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-
     // lombok 方便实体类通过注解生成相关方法
     compile 'org.projectlombok:lombok:1.16.20'
     annotationProcessor 'org.projectlombok:lombok:1.16.20'
-
 
 
 }
@@ -249,25 +252,4 @@ def getSvnRevision() {
 def CVSVersionCode = getSvnRevision()
 
 
-
-//瓦力多渠道打包配置
-walle {
-    // 指定渠道包的输出路径
-    apkOutputFolder = new File("${project.rootDir}/multi_apk/v${version_code}_" + CVSVersionCode)
-    // 定制渠道包的APK的文件名称
-    apkFileNameFormat = '${projectName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-' + CVSVersionCode + '.apk'
-//    projectName - 项目名字
-//    appName - App模块名字
-//    packageName - applicationId (App包名packageName)
-//    buildType - buildType (release/debug等)
-//    channel - channel名称 (对应渠道打包中的渠道名字)
-//    versionName - versionName (显示用的版本号)
-//    versionCode - versionCode (内部版本号)
-//    buildTime - buildTime (编译构建日期时间)
-//    fileSHA1 - fileSHA1 (最终APK文件的SHA1哈希值)
-//    flavorName - 编译构建 productFlavors 名
-    // 渠道配置文件
-    channelFile = new File("${project.rootDir}/config/markets.txt")
-//    configFile = new File("${project.rootDir}/config/config.json")
-}
 

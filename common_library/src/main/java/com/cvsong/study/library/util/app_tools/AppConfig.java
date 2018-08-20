@@ -19,11 +19,7 @@ public class AppConfig {
     public static final String IMAGEPATH = "/rice/image/";
 
 
-    /*AndroidManifest中常量*/
-    //友盟AppKey
-    public static final String UMENG_APPKEY = "UMENG_APPKEY";
-    //友盟渠道号
-    public static final String UMENG_CHANNEL = "UMENG_CHANNEL";
+
 
 
 }

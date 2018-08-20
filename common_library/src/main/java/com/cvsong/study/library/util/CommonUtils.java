@@ -8,13 +8,7 @@ import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-
-import com.cvsong.study.library.util.utilcode.util.StringUtils;
-import com.cvsong.study.library.util.utilcode.util.Utils;
-import com.meituan.android.walle.ChannelInfo;
-import com.meituan.android.walle.WalleChannelReader;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -280,20 +274,4 @@ public class CommonUtils {
     }
 
 
-    /**
-     * 获取安装包的渠道号
-     *
-     * @param defChannel 默认渠道号
-     * @return
-     */
-    public static String getChannelCode(String defChannel) {
-        String channel = defChannel;
-        // 如果没有使用PackerNg打包添加渠道，默认返回的是""
-        ChannelInfo channelInfo = WalleChannelReader.getChannelInfo(Utils.getApp());
-        if (channelInfo != null) {
-            String apkChannel = channelInfo.getChannel();
-            channel = TextUtils.isEmpty(apkChannel) ? defChannel : apkChannel;
-        }
-        return channel;
-    }
 }

@@ -91,11 +91,6 @@ public class BaseApplication extends Application {
      */
     private void initUmentAnalyze() {
 
-        String umengAppKey = AndroidManifestUtils.getMetaDataFromAppication(Utils.getApp(), AppConfig.UMENG_APPKEY);
-        String defChannel = AndroidManifestUtils.getMetaDataFromAppication(Utils.getApp(), AppConfig.UMENG_CHANNEL);
-        String channelCode = CommonUtils.getChannelCode(defChannel);//获取渠道号
-        Log.e("TAG", "umengAppKey:" + umengAppKey + ",defChannel:" + defChannel + ",channelCode:"+channelCode);
-
         //初始化友盟统计Common库 参二:AppKey 参三:Channel 参四:设备类型 参五:Push推送业务的secret，需要集成Push功能时必须传入Push的secret，否则传空。
         UMConfigure.init(this, null, null, UMConfigure.DEVICE_TYPE_PHONE, null);
 
