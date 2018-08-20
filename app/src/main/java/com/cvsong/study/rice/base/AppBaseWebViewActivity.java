@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
@@ -56,8 +58,13 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
 
         llContent = findViewById(R.id.ll_content);
         titleView = findViewById(R.id.title_view);
-        webView = findViewById(R.id.web_view);
         progressBar = findViewById(R.id.progress_bar);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView = new WebView(getApplicationContext());
+        webView.setLayoutParams(params);
+        llContent.addView(webView);
+
 
         initTitle();//初始化标题栏设置
         initWebView();//初始化WebView
@@ -188,6 +195,13 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
         webView.removeJavascriptInterface("accessibility");
         webView.removeJavascriptInterface("accessibilityTraversal");
 
+
+        //禁用file协议,防止跨域攻击
+        webSettings.setAllowFileAccess(false);
+        webSettings.setAllowFileAccessFromFileURLs(false);
+        webSettings.setAllowUniversalAccessFromFileURLs(false);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//API大于等于26
             //设置安全浏览模式
             webSettings.setSafeBrowsingEnabled(true);
@@ -248,10 +262,19 @@ public abstract class AppBaseWebViewActivity extends BaseActivity implements IBa
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+
 
         if (unbinder != Unbinder.EMPTY) {
             unbinder.unbind();//解绑黄油刀
         }
+
+        if (webView!=null) {//防止WebView内存泄漏
+            webView.loadDataWithBaseURL(null,"","text/html","utf-8",null);
+            webView.clearHistory();
+            ((ViewGroup)webView.getParent()).removeView(webView);
+            webView=null;
+        }
+        super.onDestroy();
+
     }
 }
