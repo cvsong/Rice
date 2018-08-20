@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cvsong.study.library.base.BaseActivity;
+import com.cvsong.study.library.util.IMMLeaks;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
 import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
@@ -20,7 +21,7 @@ import butterknife.Unbinder;
 public abstract class AppBaseActivity extends BaseActivity implements IBaseView {
 
 
-    protected  String TAG;
+    protected String TAG;
     private long lastClick = 0;//上次点击时间
     protected StatusLayoutManager statusLayoutManager;
     private LinearLayout llContent;
@@ -42,9 +43,9 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
         initTitle();//初始化标题栏设置
         initStatusLayout();//初始化多状态布局
         unbinder = ButterKnife.bind(this);//绑定黄油刀
-        activity=this;
+        activity = this;
         TAG = this.getClass().getSimpleName();
-        initView(savedInstanceState,llContent);//View初始化
+        initView(savedInstanceState, llContent);//View初始化
         loadData();//加载数据
 
     }
@@ -149,8 +150,11 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
             unbinder.unbind();//解绑黄油刀
         }
 
-        if (llContent!=null) {//解决内存泄漏问题
+        if (llContent != null) {//解决内存泄漏问题
             llContent.removeAllViews();
         }
+
+        //解决InputMethodManager 导致的内存泄露问题
+        IMMLeaks.fixFocusedViewLeak(getApplication());
     }
 }
