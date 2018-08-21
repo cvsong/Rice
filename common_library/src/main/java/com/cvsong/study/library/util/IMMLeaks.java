@@ -169,7 +169,7 @@ public class IMMLeaks {
             finishInputLockedMethod.setAccessible(true);
             focusInMethod = InputMethodManager.class.getDeclaredMethod("focusIn", View.class);
             focusInMethod.setAccessible(true);
-        } catch (NoSuchMethodException | NoSuchFieldException unexpected) {
+        } catch (Exception unexpected) {
             Log.e("IMMLeaks", "Unexpected reflection exception", unexpected);
             return;
         }
