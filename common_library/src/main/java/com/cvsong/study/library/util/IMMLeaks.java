@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
+import com.cvsong.study.library.util.utilcode.util.LogUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -147,9 +149,9 @@ public class IMMLeaks {
     public static void fixFocusedViewLeak(Application application) {
 
         // Don't know about other versions yet.
-        if (SDK_INT < KITKAT || SDK_INT > 22) {
-            return;
-        }
+//        if (SDK_INT < KITKAT || SDK_INT > 22) {
+//            return;
+//        }
 
         final InputMethodManager inputMethodManager =
                 (InputMethodManager) application.getSystemService(INPUT_METHOD_SERVICE);
