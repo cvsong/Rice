@@ -22,14 +22,13 @@
 
     <!--字体颜色-->
     <color name="font_white">#ffffff</color>
-
+    <color name="font_red">#ff0000</color>
 
 
 
 
     <!--分隔线颜色-->
     <color name="divider_e1e1e1">#e1e1e1</color>
-
 
 
 

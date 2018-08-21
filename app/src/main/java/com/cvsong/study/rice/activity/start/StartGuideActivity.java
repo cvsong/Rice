@@ -62,7 +62,7 @@ public class StartGuideActivity extends AppBaseActivity {
                 .build();
         final TutorialOptions tutorialOptions = TutorialFragment.newTutorialOptionsBuilder(this)
                 .setUseAutoRemoveTutorialFragment(false)//是否自动移除Fragment
-                .setUseInfiniteScroll(false)//是否循环
+                .setUseInfiniteScroll(true)//是否循环
                 .setPagesColors(pagesColors)
                 .setPagesCount(TOTAL_PAGES)
                 .setIndicatorOptions(indicatorOptions)

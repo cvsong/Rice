@@ -3,9 +3,11 @@ package com.cvsong.study.rice.activity.start;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cvsong.study.library.net.download.VersionUpdateManager;
 import com.cvsong.study.library.net.entity.HttpCallBack;
@@ -27,6 +29,7 @@ import com.cvsong.study.rice.manager.http.AppHttpManage;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 启动页
@@ -37,6 +40,8 @@ public class LauncherActivity extends AppBaseActivity {
 
     @BindView(R.id.iv_img)
     ImageView ivImg;
+    @BindView(R.id.tv_count_down)
+    TextView tvCountDown;
 
     private AppPermissionEntity[] perms;
 
@@ -52,6 +57,20 @@ public class LauncherActivity extends AppBaseActivity {
     };
     private VersionUpdateManager versionUpdateManager;
 
+    private CountDownTimer countDownTimer = new CountDownTimer(1000 * 10, 1000) {
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            if (tvCountDown != null) {
+                tvCountDown.setText(String.valueOf(millisUntilFinished / 1000));
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            judgeIsSkipGuidePage(); //判断是否跳转引导页
+        }
+    };
 
     @Override
     public int bindLayout() {
@@ -62,6 +81,8 @@ public class LauncherActivity extends AppBaseActivity {
     public void initView(Bundle savedInstanceState, View view) {
         titleView.setTitleVisibility(View.GONE);
         ivImg.setOnClickListener(this);
+        tvCountDown.setOnClickListener(this);
+
 
     }
 
@@ -90,7 +111,6 @@ public class LauncherActivity extends AppBaseActivity {
             }
         });
 
-
     }
 
     /**
@@ -113,11 +133,16 @@ public class LauncherActivity extends AppBaseActivity {
                 }
             });
 
-
-            return;
+        } else {//不需要版本更新
+            if (countDownTimer != null) {
+                tvCountDown.setVisibility(View.VISIBLE);
+                countDownTimer.start();
+            } else {
+                judgeIsSkipGuidePage(); //判断是否跳转引导页
+            }
         }
-        //不需要版本更新
-        judgeIsSkipGuidePage(); //判断是否跳转引导页
+
+
     }
 
 
@@ -152,9 +177,9 @@ public class LauncherActivity extends AppBaseActivity {
      * 判断是否跳转引导页
      */
     private void judgeIsSkipGuidePage() {
+        ActivityUtils.finishActivity(LauncherActivity.class);//结束当前页面
         //是否再次打开
         boolean isOpenAgain = AppSpUtils.getInstance().getBoolean(AppSpUtils.IS_OPEN_AGAIN);
-        ActivityUtils.finishActivity(LauncherActivity.class);//结束当前页面
         //第一次启动应用--->启动引导页面否则跳转主页面
         ActivityUtils.startActivity(isOpenAgain ? HomeActivity.class : StartGuideActivity.class);
 
@@ -167,6 +192,10 @@ public class LauncherActivity extends AppBaseActivity {
         switch (view.getId()) {
             case R.id.iv_img:
                 break;
+
+            case R.id.tv_count_down:
+                countDownTimer.onFinish();
+                break;
         }
     }
 
@@ -174,9 +203,11 @@ public class LauncherActivity extends AppBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (versionUpdateManager!=null) {
+        if (versionUpdateManager != null) {
             versionUpdateManager.close();//注销
         }
 
     }
+
+
 }
