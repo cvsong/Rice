@@ -19,6 +19,10 @@ buildscript {
         classpath 'org.tmatesoft.svnkit:svnkit:1.8.11'//SVN工具包
 
 
+//        classpath 'org.aspectj:aspectjtools:1.8.8'//AspectJ开发工具
+//        classpath 'org.aspectj:aspectjweaver:1.8.8'
+
+
     }
 }
 
