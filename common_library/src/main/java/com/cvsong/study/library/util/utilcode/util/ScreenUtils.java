@@ -1,5 +1,3 @@
-package com.cvsong.study.library.util.utilcode.util;
-
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -15,7 +13,10 @@ import android.support.annotation.RequiresPermission;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+
+import com.cvsong.study.library.util.utilcode.util.Utils;
 
 import static android.Manifest.permission.WRITE_SETTINGS;
 
@@ -100,6 +101,44 @@ public final class ScreenUtils {
     }
 
     /**
+     * Set non full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void setNonFullScreen(@NonNull final Activity activity) {
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    /**
+     * Toggle full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void toggleFullScreen(@NonNull final Activity activity) {
+        int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window = activity.getWindow();
+        if ((window.getAttributes().flags & fullScreenFlag) == fullScreenFlag) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+    /**
+     * Return whether screen is full.
+     *
+     * @param activity The activity.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isFullScreen(@NonNull final Activity activity) {
+        int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        return (activity.getWindow().getAttributes().flags & fullScreenFlag) == fullScreenFlag;
+    }
+
+    /**
      * Set the screen to landscape.
      *
      * @param activity The activity.
@@ -178,8 +217,9 @@ public final class ScreenUtils {
     public static Bitmap screenShot(@NonNull final Activity activity, boolean isDeleteStatusBar) {
         View decorView = activity.getWindow().getDecorView();
         decorView.setDrawingCacheEnabled(true);
-        decorView.buildDrawingCache();
+        decorView.setWillNotCacheDrawing(false);
         Bitmap bmp = decorView.getDrawingCache();
+        if (bmp == null) return null;
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         Bitmap ret;
@@ -253,5 +293,78 @@ public final class ScreenUtils {
         return (Utils.getApp().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    /**
+     * Adapt the screen for vertical slide.
+     *
+     * @param activity        The activity.
+     * @param designWidthInPx The size of design diagram's width, in pixel.
+     */
+    public static void adaptScreen4VerticalSlide(final Activity activity,
+                                                 final int designWidthInPx) {
+        adaptScreen(activity, designWidthInPx, true);
+    }
+
+    /**
+     * Adapt the screen for horizontal slide.
+     *
+     * @param activity         The activity.
+     * @param designHeightInPx The size of design diagram's height, in pixel.
+     */
+    public static void adaptScreen4HorizontalSlide(final Activity activity,
+                                                   final int designHeightInPx) {
+        adaptScreen(activity, designHeightInPx, false);
+    }
+
+    /**
+     * Reference from: https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA
+     */
+    private static void adaptScreen(final Activity activity,
+                                    final int sizeInPx,
+                                    final boolean isVerticalSlide) {
+        final DisplayMetrics systemDm = Resources.getSystem().getDisplayMetrics();
+        final DisplayMetrics appDm = Utils.getApp().getResources().getDisplayMetrics();
+        final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
+        if (isVerticalSlide) {
+            activityDm.density = activityDm.widthPixels / (float) sizeInPx;
+        } else {
+            activityDm.density = activityDm.heightPixels / (float) sizeInPx;
+        }
+        activityDm.scaledDensity = activityDm.density * (systemDm.scaledDensity / systemDm.density);
+        activityDm.densityDpi = (int) (160 * activityDm.density);
+
+        appDm.density = activityDm.density;
+        appDm.scaledDensity = activityDm.scaledDensity;
+        appDm.densityDpi = activityDm.densityDpi;
+    }
+
+    /**
+     * Cancel adapt the screen.
+     *
+     * @param activity The activity.
+     */
+    public static void cancelAdaptScreen(final Activity activity) {
+        final DisplayMetrics systemDm = Resources.getSystem().getDisplayMetrics();
+        final DisplayMetrics appDm = Utils.getApp().getResources().getDisplayMetrics();
+        final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
+        activityDm.density = systemDm.density;
+        activityDm.scaledDensity = systemDm.scaledDensity;
+        activityDm.densityDpi = systemDm.densityDpi;
+
+        appDm.density = systemDm.density;
+        appDm.scaledDensity = systemDm.scaledDensity;
+        appDm.densityDpi = systemDm.densityDpi;
+    }
+
+    /**
+     * Return whether adapt screen.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isAdaptScreen() {
+        final DisplayMetrics systemDm = Resources.getSystem().getDisplayMetrics();
+        final DisplayMetrics appDm = Utils.getApp().getResources().getDisplayMetrics();
+        return systemDm.density != appDm.density;
     }
 }
