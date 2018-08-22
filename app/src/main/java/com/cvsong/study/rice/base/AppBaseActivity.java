@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.cvsong.study.library.base.BaseActivity;
 import com.cvsong.study.library.util.IMMLeaks;
 import com.cvsong.study.library.util.utilcode.util.ActivityUtils;
+import com.cvsong.study.library.util.utilcode.util.ScreenUtils;
 import com.cvsong.study.library.wiget.statuslayout.OnRetryListener;
 import com.cvsong.study.library.wiget.statuslayout.OnShowHideViewListener;
 import com.cvsong.study.library.wiget.statuslayout.StatusLayoutManager;
@@ -55,7 +56,8 @@ public abstract class AppBaseActivity extends BaseActivity implements IBaseView 
      * 设置主题样式
      */
     protected void setThemStyle() {
-
+        //使用今日头条屏幕适配方案
+        ScreenUtils.adaptScreen4VerticalSlide(this,360);
     }
 
 
