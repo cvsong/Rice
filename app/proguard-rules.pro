@@ -277,6 +277,18 @@
 public static final int *;
 }
 
+##------------------照片拍摄
+-keep class com.cvsong.study.library.util.takephoto.** { *; }
+-dontwarn com.cvsong.study.library.util.takephoto.**
+
+##------------------图片选择
+-keep class com.darsh.multipleimageselect.** { *; }
+-dontwarn com.darsh.multipleimageselect.**
+
+##------------------照片裁剪
+-keep class com.soundcloud.android.crop.** { *; }
+-dontwarn com.soundcloud.android.crop.**
+
 
 
 

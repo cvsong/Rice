@@ -14,5 +14,15 @@
         android:textSize="@dimen/fontSize_18"/>
 
 
+    <com.cvsong.study.library.wiget.CircleImageView
+        android:id="@+id/iv_head"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/img_app_bg"
+        app:civ_border_color="@color/bg_blue_3fa9c4"
+        app:civ_border_overlay="false"
+        app:civ_border_width="2dp"
+        app:civ_fill_color="@color/font_red"/>
+
 
 </LinearLayout>

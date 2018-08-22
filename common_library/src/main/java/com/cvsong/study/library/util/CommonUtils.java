@@ -1,6 +1,7 @@
 package com.cvsong.study.library.util;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +10,8 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
+
+import com.cvsong.study.library.util.utilcode.util.Utils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -255,9 +258,7 @@ public class CommonUtils {
      * @param context
      * @return
      */
-    public static String getSignature(Context context)
-
-    {
+    public static String getSignature(Context context) {
         try {
             /** 通过包管理器获得指定包名包含签名的包信息 **/
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -273,5 +274,14 @@ public class CommonUtils {
         return null;
     }
 
+
+    /**
+     * 获取文件共享authority的名称
+     * @return
+     */
+    public  static String getFileProviderName() {
+        Application app = Utils.getApp();
+        return app.getPackageName() + ".fileprovider";
+    }
 
 }

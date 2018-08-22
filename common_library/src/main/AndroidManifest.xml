@@ -30,6 +30,8 @@
             android:exported="false"
             android:label=""
             android:theme="@style/Transparent_Activity"/>
+        <!--第三方裁剪页面-->
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
 
         <!--Service-->
@@ -48,7 +50,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/file_paths"/>
         </provider>
 
 

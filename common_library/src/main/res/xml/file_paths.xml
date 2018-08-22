@@ -9,7 +9,13 @@
         <external-path path="" name="image" />-->
 
     <root-path
+        path=""
         name="download"
-        path=""/>
+        />
+
+
+    <root-path
+        path=""
+        name="camera_photos" />
 
 </paths>

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 
 import com.cvsong.study.library.net.download.DownloadService;
+import com.cvsong.study.library.util.CommonUtils;
 import com.cvsong.study.library.util.utilcode.util.AppUtils;
 
 import java.io.File;
@@ -59,8 +60,8 @@ public class DownloadUtils {
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//兼容Android7.0 FileProvider的使用
             //此处的authority需要和manifest里面保持一致。
-            String appPackageName = AppUtils.getAppPackageName();
-            uri = FileProvider.getUriForFile(context, appPackageName + ".fileprovider", file);
+            String authority = CommonUtils.getFileProviderName();
+            uri = FileProvider.getUriForFile(context, authority, file);
             //需要申请权限
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
