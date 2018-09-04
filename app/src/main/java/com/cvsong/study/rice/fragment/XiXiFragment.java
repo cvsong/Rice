@@ -4,10 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.cvsong.study.library.webservice.WebServiceUtils;
 import com.cvsong.study.library.wiget.CircleImageView;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseFragment;
+
+import org.ksoap2.serialization.SoapObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +54,11 @@ public class XiXiFragment extends AppBaseFragment {
     @Override
     public void loadData() {
 
+
     }
+
+
+
 
     @Override
     protected void onWidgetClick(View view) {

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 
-import com.cvsong.study.library.R;
+import com.cvsong.study.rice.R;
 
 import java.util.Collection;
 import java.util.List;
@@ -57,8 +57,7 @@ public abstract class AppBaseAdapter<T, VH extends AppBaseAdapter.AppHolder> ext
 
     protected VH getHelper(View convertView, ViewGroup parent, int viewType) {
         if (convertView != null) {
-//            Object obj = convertView.getTag(R.id.adapter_holder_id + viewType * 16);
-            Object obj = convertView.getTag( viewType * 16);
+            Object obj = convertView.getTag(R.id.adapter_holder_id + viewType * 16);
 
             if (obj != null) {
                 VH holder = (VH) obj;

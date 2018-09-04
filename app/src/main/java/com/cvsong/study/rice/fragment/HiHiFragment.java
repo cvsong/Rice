@@ -4,9 +4,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.cvsong.study.library.util.utilcode.util.LogUtils;
+import com.cvsong.study.library.webservice.SoapManager;
+import com.cvsong.study.library.webservice.WebServiceUtils;
 import com.cvsong.study.rice.R;
 import com.cvsong.study.rice.base.AppBaseFragment;
+import com.cvsong.study.rice.entity.SilverInfoEntity;
+
+import org.ksoap2.serialization.SoapObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -89,13 +100,46 @@ public class HiHiFragment extends AppBaseFragment {
      */
     private void makeBug1() {
 
-        String error = "Hello AndFix!!!!!!!!!!";
-//        String error = null;
+        //添加参数
+        HashMap<String, String> properties = new HashMap<String, String>();
+        properties.put("byProvinceName", "");
+        //通过工具类调用WebService接口
 
-        Log.e(TAG, error);
+        WebServiceUtils.callWebService(WebServiceUtils.WEB_SERVER_URL, "getSupportProvince", null, new WebServiceUtils.WebServiceCallBack() {
+
+            //WebService接口返回的数据回调到这个方法中
+            @Override
+            public void callBack(SoapObject result) {
+                if(result != null){
+                    String json = SoapManager.getInstance().soapToJson(result, SilverInfoEntity.ResultEntity.class);
+                    LogUtils.e(TAG,json);
+                    List<String> provinceList = parseSoapObject(result);
+                    LogUtils.i(TAG, provinceList);
+
+                }else{
+                    Toast.makeText(activity, "获取WebService数据错误", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
+    /**
+     * 解析SoapObject对象
+     * @param result
+     * @return
+     */
+    private List<String> parseSoapObject(SoapObject result){
+        List<String> list = new ArrayList<String>();
+        SoapObject provinceSoapObject = (SoapObject) result.getProperty("getSupportProvinceResult");
+        if(provinceSoapObject == null) {
+            return null;
+        }
+        for(int i=0; i<provinceSoapObject.getPropertyCount(); i++){
+            list.add(provinceSoapObject.getProperty(i).toString());
+        }
 
+        return list;
+    }
 
     /**
      * 修复Bug
